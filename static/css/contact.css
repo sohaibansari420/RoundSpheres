@@ -1,0 +1,93 @@
+
+/* Contact Info Section */
+.contact-info {
+    background: #e7fbe7; /* Soft green */
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.contact-info h2 {
+    color: #007B55;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-info a {
+    color: #007B55;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Contact Form Section */
+.contact-form {
+    padding: 2rem 1rem;
+}
+
+.contact-form h2 {
+    text-align: center;
+    color: #007B55;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+textarea {
+    resize: none;
+}
+
+input:focus, textarea:focus {
+    border-color: #007B55;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 85, 0.5);
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    background: #007B55;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #00563c; /* Darker green */
+}

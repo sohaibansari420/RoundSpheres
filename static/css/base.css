@@ -1,0 +1,123 @@
+.background{
+
+    size: 50% auto;
+    
+   
+}
+
+
+
+
+.form-control {
+    display: block;
+    width: 150px;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+
+}
+
+.btnn {
+    width: 280px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hero Section */
+
+.hero {
+    background: url('../images/water-saving.jpg') no-repeat center center/cover;
+    color: rgb(0, 0, 0);
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.hero .btn {
+    background: #28a745;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.features {
+    background: #f8f9fa;
+    padding: 2rem 1rem;
+}
+
+.features .feature-grid {
+    display: flex;
+    gap: 2rem;
+}
+
+.features .feature {
+    background: white;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+}
+
+
+/* Solutions Section */
+.solutions {
+    padding: 2rem 1rem;
+    background-color: #e7fbe7; /* Soft green background */
+    text-align: center;
+}
+
+.solutions h1 {
+    font-size: 2.5rem;
+    color: #04a3ff; /* Deep green for headers */
+    margin-bottom: 1rem;
+}
+
+.solutions ul {
+    margin: 1.5rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.solutions ul li {
+    font-size: 1.2rem;
+    color: #333;
+    background: #fff;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Button */
+.solutions .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #027cbe; /* Consistent eco-green */
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.solutions .btn:hover {
+    background-color: #060202; /* Hover effect */
+    transform: scale(1.05);
+}
+
+
+
+
+
+
