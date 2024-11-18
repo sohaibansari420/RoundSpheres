@@ -1,3 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+
+
 .background{
 
     size: 50% auto;
@@ -114,8 +129,7 @@
 .solutions .btn:hover {
     background-color: #060202; /* Hover effect */
     transform: scale(1.05);
-}
-
+} 
 
 
 
