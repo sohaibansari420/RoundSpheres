@@ -4,7 +4,7 @@ Date: 20241119
 Purpose: Basic Flask Server for RoundSphere Website
 """
 
-from flask import Flask,request
+from flask import Flask,request,render_template,jsonify
 import json
 # SQLAlchemy is an Object Relational Mapper allowing decoupling of db operations
 from flask_sqlalchemy import SQLAlchemy
@@ -45,24 +45,102 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 #------------------------------------------------------------------------------
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
 
 # HTTP Methods and Endpoints
 
 # --USER MANAGEMENT--
+#------------------------------------------------------------------------------
+# --AUTHENTICATION--
 # User Registration
-@app.post("/users/register")
-def users_add_json():
- """endpoint uses json to add user details to db"""
- json_data = request.get_json() # req.get_json() used to access json sent
+@app.post("/auth/register")
+def users_regisgtration():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# User Login
+@app.post("/auth/login")
+def users_login():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# --RETRIEVING SCIENTIFIC DATA--
+# Fetching Data
+@app.get("/api/data")
+def get_data():
+ response = [{
+  "status": "success",
+  "data": [
+    {
+      "dataId": 1,
+      "date": "2024-01-01",
+      "temperatureWater": 15.2,
+      "temperatureAir": 18.5,
+      "humidity": 60,
+      "windSpeed": 12.4,
+      "precipitation": 0.0,
+      "notes": "Clear day"
+    },
+    {
+      "dataId": 2,
+      "date": "2024-01-02",
+      "temperatureWater": 15.8,
+      "temperatureAir": 20.0,
+      "humidity": 65,
+      "windSpeed": 8.9,
+      "precipitation": 0.2,
+      "notes": "Light drizzle"
+    }
+  ]
+}
+]
+ return jsonify (response)
+
+# Upload Data
+@app.post("/api/add-data")
+def create_data():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# Upload Data
+@app.put("/api/add-data")
+def create_data():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# Upload Bulk Data
+@app.post("/api/add-data/bulk")
+def create_data():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+
+# --ADMINISTRATIVE ACTION--
+# Add Product
+@app.post("/api/add-product")
+def create_data():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+
+
+@app.delete('/users/delete-one-user-json')
+def delete_one_user_json():
+ """endpoint uses json to determine user to be queried from db"""
+ json_data = request.delete_json() # req.delete_json() used to access json data
  print(json_data) # used for debugging purposes
- new_user = User (
- user_id = json_data['user_id'],
- user_forename = json_data['user_forename'],
- user_surname = json_data['user_surname'],
- user_email = json_data['user_email']
- )
- db.session.add(new_user)
- db.session.commit()
- print ("Record added:")
- print (json.dumps(json_data, indent=4)) # used for debugging purposes
- return user_schema.jsonify(new_user)
+ user_id = json_data['user_id']
+ User.query.filter_by(user_id=user_id).delete()
+ return {"User deleted with JSON" : f"user_id: {user_id}"}
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

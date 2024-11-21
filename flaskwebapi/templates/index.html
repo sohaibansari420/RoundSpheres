@@ -1,0 +1,175 @@
+{% extends 'base.html' %} {% block title %}Home {% endblock title %} {% block
+body %}
+<link rel="stylesheet" href="../static/css/base.css" />
+
+<div class="container-fluid height: 50% px-0">
+  <div class="background">
+    <img src="../static/images/background.png" class="d-block w-100" alt="" />
+  </div>
+
+  {% block content %}
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to RoundSpheres</h1>
+      <p>Innovative solutions for water conservation and sustainability.</p>
+      <a href="/solutions/" class="btn">Explore Our Solutions</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Why Choose Us?</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>Eco-Friendly Products</h3>
+          <p>Our solutions are designed with sustainability in mind.</p>
+        </div>
+        <div class="feature">
+          <h3>Innovative Technology</h3>
+          <p>We leverage cutting-edge technology to conserve water.</p>
+        </div>
+        <div class="feature">
+          <h3>Proven Results</h3>
+          <p>Our systems save thousands of liters of water every day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="solutions">
+    <div class="container">
+      <h1>Our Solutions</h1>
+      <ul>
+        <li>Smart Irrigation Systems</li>
+        <li>Rainwater Harvesting Technology</li>
+        <li>Water Recycling Systems</li>
+      </ul>
+      <a href="/contact/" class="btn">Get in Touch</a>
+    </div>
+  </section>
+
+  {% endblock %}
+</div>
+
+{% endblock body %}
+
+<!-- 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RoundSpheres/title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+   
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+   
+   
+   
+   <nav class="navbar navbar-expand-lg bg-body-tertiary navbar bg-dark border-bottom border-body" data-bs-theme="dark"">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">RoundSpheres</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          
+          
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/shop">Shop</a>
+          </li>
+          
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Data Portal</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/about">About</a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          </li>
+        
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/login">Login/Signup</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/contact">Contact Us</a>
+          </li>
+
+          
+          
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
+  
+  
+  </body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Responsive Navbar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <a href="#">RoundSpheres</a>
+    </div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Services</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" aria-label="Toggle Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main>
+    <section id="home">
+      <h1>Welcome to RoundSpheres</h1>
+      <p>Your ultimate source for Shade Balls and water conservation solutions.</p>
+    </section>
+    <section id="shop">
+      <h2>Shop Our Products</h2>
+    </section>
+    <section id="about">
+      <h2>About Us</h2>
+    </section>
+    <section id="services">
+      <h2>Our Services</h2>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html> -->
