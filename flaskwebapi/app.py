@@ -71,8 +71,8 @@ def users_login():
 
 # --RETRIEVING SCIENTIFIC DATA--
 # Fetching Data
-@app.get("/api/data")
-def get_data():
+@app.get("/api/get-all-data")
+def get_all_data():
  response = [{
   "status": "success",
   "data": [
@@ -109,15 +109,15 @@ def create_data():
  return jsonify(data)
 
 # Upload Data
-@app.put("/api/add-data")
-def create_data():
+@app.put("/api/upload-data")
+def update_data():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
 # Upload Bulk Data
 @app.post("/api/add-data/bulk")
-def create_data():
+def create_data_bulk():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
@@ -126,16 +126,14 @@ def create_data():
 # --ADMINISTRATIVE ACTION--
 # Add Product
 @app.post("/api/add-product")
-def create_data():
+def create_product():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
 
-
-@app.delete('/users/delete-one-user-json')
-def delete_one_user_json():
- """endpoint uses json to determine user to be queried from db"""
+@app.delete('/api/delete-product')
+def delete_product():
  json_data = request.delete_json() # req.delete_json() used to access json data
  print(json_data) # used for debugging purposes
  user_id = json_data['user_id']
