@@ -1,0 +1,116 @@
+# test root route
+curl --request GET http://127.0.0.1:5000
+
+# test retrieving scientific
+curl --request GET http://127.0.0.1:5000/api/get-all-data
+
+# test retrieving predictive analytic data
+curl --request GET http://127.0.0.1:5000/api/analytics/predictive
+
+# test retrieving predictive analytic data
+curl --request GET http://127.0.0.1:5000/api/get-user-profile
+
+# test update a specific field predictive analytic data
+curl --request PATCH http://127.0.0.1:5000/api/update-data \
+--header "Content-Type: application/json" \
+--data
+'{"name":"Apple MacBook Pro 16","data":{"year":2022,"price":2399.99,"CPU model":"M1","Hard disk size":"1 TB","color":"space grey"}}'
+
+# test update a predictive analytic data
+curl --request PUT http://127.0.0.1:5000/api/update-data \
+--header "Content-Type: application/json" \
+--data
+'{"data":{"year":2022,"price":2399.99,"CPU model":"M1","Hard disk size":"1 TB","color":"space grey"}}'
+
+# test update a product data
+curl --request PUT http://127.0.0.1:5000/api/update-product \
+--header "Content-Type: application/json" \
+--data
+'{"name":"Apple MacBook Pro 16", "year":2022,"price":2399.99,"CPU model":"M1","Hard disk size":"1 TB","color":"space grey"}'
+
+# test update a user profile data
+curl --request PATCH http://127.0.0.1:5000/api/update-user-profile \
+--header "Content-Type: application/json" \
+--data
+'{"name":"Apple MacBook Pro 16"}'
+
+# test delete product route with query parameters
+curl --request DELETE http://127.0.0.1:5000/api/delete-product?product_id=2
+
+# test delete User profile route with query parameters
+curl --request DELETE http://127.0.0.1:5000/api/delete-user-profile?profile_id=2
+
+# test register user
+curl --request POST http://127.0.0.1:5000/auth/register \
+--header "Content-Type: application/json" \
+--data
+'{
+ "user_id" : "700125",
+ "user_forename" : "Francis",
+ "user_surname" : "Morrissey",
+ "user_email" : "fm10@Bolton.ac.uk"
+}'
+
+# test user login
+curl --request POST http://127.0.0.1:5000/auth/login \
+--header "Content-Type: application/json" \
+--data
+'{
+ "username" : "prime"
+}'
+#  "password" : "Prime" add to register and login
+
+# test upload new scientific data
+curl --request POST http://127.0.0.1:5000/api/add-data \
+--header "Content-Type: application/json" \
+--data
+'{
+ "dataId": 1,
+      "date": "2024-01-01",
+      "temperatureWater": 15.2,
+      "temperatureAir": 18.5,
+      "humidity": 60,
+      "windSpeed": 12.4,
+      "precipitation": 0.0,
+      "notes": "Clear day"
+}'
+
+# test upload new scientific data in bulk
+curl --request POST http://127.0.0.1:5000/api/add-data/bulk \
+--header "Content-Type: application/json" \
+--data
+'[
+    {
+      "dataId": 1,
+      "date": "2024-01-01",
+      "temperatureWater": 15.2,
+      "temperatureAir": 18.5,
+      "humidity": 60,
+      "windSpeed": 12.4,
+      "precipitation": 0.0,
+      "notes": "Clear day"
+    },
+    {
+      "dataId": 2,
+      "date": "2024-01-02",
+      "temperatureWater": 15.8,
+      "temperatureAir": 20.0,
+      "humidity": 65,
+      "windSpeed": 8.9,
+      "precipitation": 0.2,
+      "notes": "Light drizzle"
+    }
+  ]'
+
+# test upload new product
+curl --request POST http://127.0.0.1:5000/api/add-product \
+--header "Content-Type: application/json" \
+--data
+'{
+ "dataId": 1,
+ "date": "2024-01-01",
+ "image": "",
+ "pricing": 18.5,
+ "description": "gfdfgbvwefgbdefrgfbvcvgfvcfcvfc",
+ "title": "Shade Ball",
+}'

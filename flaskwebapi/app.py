@@ -49,7 +49,6 @@ users_schema = UserSchema(many=True)
 def home():
     return render_template("index.html")
 
-
 # HTTP Methods and Endpoints
 
 # --USER MANAGEMENT--
@@ -57,7 +56,7 @@ def home():
 # --AUTHENTICATION--
 # User Registration
 @app.post("/auth/register")
-def users_regisgtration():
+def users_registration():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
@@ -70,7 +69,7 @@ def users_login():
  return jsonify(data)
 
 # --RETRIEVING SCIENTIFIC DATA--
-# Fetching Data
+# Fetching All Scientific Data
 @app.get("/api/get-all-data")
 def get_all_data():
  response = [{
@@ -101,21 +100,50 @@ def get_all_data():
 ]
  return jsonify (response)
 
-# Upload Data
+# --RETRIEVING ANALYTIC DATA--
+# Fetching Predictive analytics Data
+@app.get("/api/analytics/predictive")
+def get_analytic_data():
+ response = [{
+  "status": "success",
+  "predictions": [
+    {
+      "region": "Reservoir A",
+      "evaporationRate": 2.5,
+      "trend": "Decreasing"
+    },
+    {
+      "region": "Reservoir B",
+      "evaporationRate": 3.1,
+      "trend": "Stable"
+    }
+  ]
+}
+]
+ return jsonify (response)
+
+# Upload New Scientific Data 
 @app.post("/api/add-data")
 def create_data():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-# Upload Data
-@app.put("/api/upload-data")
+# Update Specific Scientific Data elements like tempature only
+@app.patch("/api/update-data")
+def update_data_field():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# Update Scientific Data
+@app.put("/api/update-data")
 def update_data():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-# Upload Bulk Data
+# Upload Bulk Scientific Data
 @app.post("/api/add-data/bulk")
 def create_data_bulk():
  data = request.get_json() # access data from POST request
@@ -124,13 +152,19 @@ def create_data_bulk():
 
 
 # --ADMINISTRATIVE ACTION--
-# Add Product
+# Add new Product
 @app.post("/api/add-product")
 def create_product():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
+# Update Product Data
+@app.put("/api/update-product")
+def update_product():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
 
 @app.delete('/api/delete-product')
 def delete_product():
@@ -140,5 +174,45 @@ def delete_product():
  User.query.filter_by(user_id=user_id).delete()
  return {"User deleted with JSON" : f"user_id: {user_id}"}
 
+
+# --USER ACCOUNT MANAGEMENT--
+# Retrieve Data of a specific User
+@app.get("/api/get-user-profile")
+def get_user_profile():
+ response = [{
+  "status": "success",
+  "data": [
+    {
+      "dataId": 1,
+      "date": "2024-01-01",
+      "firstName": "Prime",
+      "lastName": "Senpai",
+      "email": "gojo@gmail.com",
+      "profilePic": "",
+      "Role": "Admin",
+    }
+  ]
+}
+]
+ return jsonify (response)
+
+# Allow User update profile information
+@app.patch("/api/update-user-profile")
+def update_user_profile():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# Delete user account---only admin has this permission
+@app.delete('/api/delete-user-profile')
+def delete_user_profile():
+ json_data = request.delete_json() # req.delete_json() used to access json data
+ print(json_data) # used for debugging purposes
+ user_id = json_data['user_id']
+ User.query.filter_by(user_id=user_id).delete()
+ return {"User deleted with JSON" : f"user_id: {user_id}"}
+
+
+# Port
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
