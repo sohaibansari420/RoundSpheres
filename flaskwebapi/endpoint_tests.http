@@ -114,3 +114,13 @@ curl --request POST http://127.0.0.1:5000/api/add-product \
  "description": "gfdfgbvwefgbdefrgfbvcvgfvcfcvfc",
  "title": "Shade Ball",
 }'
+
+curl --request GET http://127.0.0.1:5000/api/orders
+
+curl --request POST http://127.0.0.1:5000/api/add-orders \
+--header "Content-Type: application/json" \
+--data
+'{
+ "id": 1,
+ "quantity": "2",
+}'
