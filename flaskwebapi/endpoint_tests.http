@@ -107,12 +107,12 @@ curl --request POST http://127.0.0.1:5000/api/add-product \
 --header "Content-Type: application/json" \
 --data
 '{
- "dataId": 1,
- "date": "2024-01-01",
- "image": "",
- "pricing": 18.5,
- "description": "gfdfgbvwefgbdefrgfbvcvgfvcfcvfc",
- "title": "Shade Ball",
+    "productId": 1,
+    "name": "Water Purifier 2000",
+    "description": "Advanced water purifier with multi-stage filtration for homes.",
+    "price": 150.25,
+    "stock": 20,
+    "image":""
 }'
 
 curl --request GET http://127.0.0.1:5000/api/orders
