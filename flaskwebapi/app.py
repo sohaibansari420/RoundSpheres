@@ -339,11 +339,8 @@ def delete_user_profile(profileId):
  db.session.commit()
  return {"User deleted with route params" : f"profiled: {profileId}"}
 
-
-# Port
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
+#------------------------------------------------------------------------------
+# --ORDER MANAGEMENT--
 # Add new order
 @app.post("/api/add-orders")
 def create_order():
@@ -365,3 +362,8 @@ def get_orders():
 }
 ]
  return jsonify (response)
+
+
+# Port
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
