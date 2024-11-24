@@ -343,3 +343,25 @@ def delete_user_profile(profileId):
 # Port
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+# Add new order
+@app.post("/api/add-orders")
+def create_order():
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
+
+# get order
+@app.get("/api/orders")
+def get_orders():
+ response = [{
+  "status": "success",
+  "predictions": [
+    {
+      "id": "1",
+      "quantity": 2.5
+    }
+  ]
+}
+]
+ return jsonify (response)
