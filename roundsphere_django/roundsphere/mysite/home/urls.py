@@ -9,7 +9,8 @@ urlpatterns = [
     path("contact", views.contact, name='contact'),
     path("shop", views.shop, name='shop'),
     path("blog", views.blog, name='blog'),
-    path("login", views.login, name='login'),
+    path("login/", views.login, name='login'),
+    path("signup/", views.signup, name='signup'),
     path("data", views.data, name='data'),
     # # Detail views for Apidata
     # path('apidata/<int:dataId>/', views.ApidataDetailView.as_view(), name='apidata-detail'),
