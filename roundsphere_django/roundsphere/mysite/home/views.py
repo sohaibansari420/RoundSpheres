@@ -34,3 +34,6 @@ def login(request):
 
 def shop(request):
     return render(request, 'shop.html') 
+
+def signup(request):
+    return render(request, 'signup.html') 
