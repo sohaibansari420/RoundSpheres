@@ -74,7 +74,7 @@ class Analytic(db.Model):
       
 # Product 
 class Product(db.Model):
-    """Definition of the User Model used by SQLAlchemy"""
+    """Definition of the Product Model used by SQLAlchemy"""
     __tablename__ = 'Product_data'
     productId       = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), nullable=False)
@@ -85,6 +85,23 @@ class Product(db.Model):
  
     def __repr__(self):
         return '<Product %r>' % self.productId
+    
+# Order 
+class Order(db.Model):
+    """Definition of the Order Model used by SQLAlchemy"""
+    __tablename__ = 'Order_data'
+    orderId       = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userId       = db.Column(db.Integer, autoincrement=True)
+    productId       = db.Column(db.Integer, autoincrement=True)
+    orderItemId       = db.Column(db.Integer, autoincrement=True)
+    status = db.Column(db.String(80), nullable=False)
+    pricePerUnit    = db.Column(db.Float, nullable=True)
+    totalAmout    = db.Column(db.Float, nullable=True)
+    quantity     = db.Column(db.Integer, nullable=True)
+    orderDate   = db.Column(db.DateTime(timezone=True), server_default=func.now())
+ 
+    def __repr__(self):
+        return '<Order %r>' % self.orderId
 #------------------------------------------------------------------------------
 # class def for Marshmallow serialization
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -103,9 +120,14 @@ class AnalyticDataSchema(ma.SQLAlchemyAutoSchema):
     fields = ("analyticId","region","evaporationRate", "trend")     
     
 class ProductSchema(ma.SQLAlchemyAutoSchema):
- """Definition used by serialization library based on User Model"""
+ """Definition used by serialization library based on Product Model"""
  class Meta:
-    fields = ("productId","name","description", "price", "stock")    
+    fields = ("productId","name","description", "price", "stock")  
+    
+class OrderSchema(ma.SQLAlchemyAutoSchema):
+ """Definition used by serialization library based on Order Model"""
+ class Meta:
+    fields = ("orderId","userId","productId","orderItemId","quantity","totalAmount", "status", "orderDate","pricePerUnit",)    
     
 # instantiate objs based on Marshmallow schemas
 user_schema = UserSchema()
@@ -116,6 +138,8 @@ analytic_schema = AnalyticDataSchema()
 analytics_schema = AnalyticDataSchema(many=True)
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
+order_schema = OrderSchema()
+orders_schema = OrderSchema(many=True)
 #------------------------------------------------------------------------------
 # Configure Swagger UI
 # SWAGGER_URL = '/swagger1'
@@ -344,25 +368,59 @@ def delete_user_profile(profileId):
 # Add new order
 @app.post("/api/add-orders")
 def create_order():
- data = request.get_json() # access data from POST request
- print(json.dumps(data,indent=4))
- return jsonify(data)
+ json_data = request.get_json() # req.get_json() used to access json sent
+ print(json_data) # used for debugging purposes
+ newOrder = Order (
+ orderId = json_data['orderId'],
+ userId = json_data['userId'],
+ orderDate = json_data['orderDate'],
+ totalAmount = json_data['totalAmount'],
+ status = json_data['status']
+ )
+ db.session.add(newOrder)
+ db.session.commit()
+ print ("New Order added:")
+ print (json.dumps(json_data, indent=4)) # used for debugging purposes
+ return order_schema.jsonify(newOrder)
+
+# Add new order item
+@app.post("/api/add-order-item")
+def create_order_item():
+ json_data = request.get_json() # req.get_json() used to access json sent
+ print(json_data) # used for debugging purposes
+ newOrderItem = Order (
+ orderId = json_data['orderId'],
+ userId = json_data['userId'],
+ orderDate = json_data['orderDate'],
+ totalAmount = json_data['totalAmount'],
+ status = json_data['status']
+ )
+ db.session.add(newOrderItem)
+ db.session.commit()
+ print ("New Order added:")
+ print (json.dumps(json_data, indent=4)) # used for debugging purposes
+ return order_schema.jsonify(newOrderItem)
+
 
 # get order
 @app.get("/api/orders")
 def get_orders():
- response = [{
-  "status": "success",
-  "predictions": [
-    {
-      "id": "1",
-      "quantity": 2.5
-    }
-  ]
-}
-]
- return jsonify (response)
+ orders = Order.query.all()
+ return orders_schema.jsonify(orders)
 
+# Retrieve Data of a specific Order
+@app.get("/api/orders/<orderId>")
+def get_single_order(orderId):
+ """endpoint uses route parameters to determine user to be queried from db"""
+ order = Order.query.filter_by(orderId=orderId).first()
+ return orders_schema.jsonify(order)
+
+# Allow Admin update profile information
+@app.patch("/api/orders/<orderId>")
+def update_order(profileId):
+ data = request.get_json() # access data from POST request
+ print(json.dumps(data,indent=4))
+ return jsonify(data)
 
 # Port
 if __name__ == "__main__":
