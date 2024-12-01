@@ -101,7 +101,7 @@ class Product(db.Model):
 
     def to_dict(self):
         return {
-            "product_id": self.product_id,
+            "productId": self.productId,
             "name": self.name,
             "description": self.description,
             "price": self.price,
