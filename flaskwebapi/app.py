@@ -6,9 +6,9 @@ Purpose: Basic Flask Server for RoundSphere Website
 
 from flask import Flask,request,render_template,jsonify
 import json
-# SQLAlchemy is an Object Relational Mapper allowing decoupling of db operations
+'''SQLAlchemy is an Object Relational Mapper allowing decoupling of db operations'''
 from flask_sqlalchemy import SQLAlchemy
-# Marshmallow is an object serialization/deserialization library
+'''Marshmallow is an object serialization/deserialization library'''
 from flask_marshmallow import Marshmallow
 from sqlalchemy.sql import func
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -16,18 +16,18 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 
-# SQLAlchemy configuration
+'''SQLAlchemy configuration'''
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///roundspheres.db' # path to db
 app.config['SQLALCHEMY_ECHO'] = True # echoes SQL for debug
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#------------------------------------------------------------------------------
-# instantiate db obj using the SQLAlchemy class with the Flask app obj as arg
+'''--------------------------------------------------------------------------------------------------'''
+'''instantiate db obj using the SQLAlchemy class with the Flask app obj as arg'''
 db = SQLAlchemy(app)
-#------------------------------------------------------------------------------
-# Marshmallow must be initialised after SQLAlchemy
+'''--------------------------------------------------------------------------------------------------'''
+'''Marshmallow must be initialised after SQLAlchemy'''
 ma = Marshmallow(app)
-#------------------------------------------------------------------------------
-# class def for SQLAlchemy ORM
+'''--------------------------------------------------------------------------------------------------'''
+'''class def for SQLAlchemy ORM'''
 class User(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     # user_id       = db.Column(db.String(80), primary_key=True)
@@ -41,8 +41,18 @@ class User(db.Model):
  
     def __repr__(self):
         return '<User %r>' % self.profileId
+    
+    def to_dict(self):
+        return {
+            "profileId": self.profileId,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "email": self.email,
+            "role": self.role,
+            "created_at": self.created_at.isoformat()
+        }
       
-# APIData
+'''APIData'''
 class Apidata(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     __tablename__ = 'IoT_data'
@@ -58,7 +68,7 @@ class Apidata(db.Model):
     def __repr__(self):
         return '<Apidata %r>' % self.dataId
 
-# AnalyticData
+'''AnalyticData'''
 class Analytic(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     __tablename__ = 'Analytic_data'
@@ -72,7 +82,7 @@ class Analytic(db.Model):
     def __repr__(self):
         return '<Analyticdata %r>' % self.analyticId
       
-# Product 
+'''Product''' 
 class Product(db.Model):
     """Definition of the Product Model used by SQLAlchemy"""
     __tablename__ = 'Product_data'
@@ -84,9 +94,21 @@ class Product(db.Model):
     created_at    = db.Column(db.DateTime(timezone=True), server_default=func.now())
  
     def __repr__(self):
-        return '<Product %r>' % self.productId
+        return '<Product %r>' % self.productId, self.name, self.price, self.stock
     
-# Order 
+    # def __repr__(self):
+    #     return f"<Product(id={self.productId}, name={self.name}, price={self.price}, stock={self.stock})>"
+
+    def to_dict(self):
+        return {
+            "product_id": self.product_id,
+            "name": self.name,
+            "description": self.description,
+            "price": self.price,
+            "stock": self.stock,
+            "created_at": self.created_at.isoformat()
+        }
+'''Order''' 
 class Order(db.Model):
     """Definition of the Order Model used by SQLAlchemy"""
     __tablename__ = 'Order_data'
@@ -102,8 +124,8 @@ class Order(db.Model):
  
     def __repr__(self):
         return '<Order %r>' % self.orderId
-#------------------------------------------------------------------------------
-# class def for Marshmallow serialization
+'''--------------------------------------------------------------------------------------------------'''
+'''class def for Marshmallow serialization'''
 class UserSchema(ma.SQLAlchemyAutoSchema):
  """Definition used by serialization library based on User Model"""
  class Meta:
@@ -129,7 +151,7 @@ class OrderSchema(ma.SQLAlchemyAutoSchema):
  class Meta:
     fields = ("orderId","userId","productId","orderItemId","quantity","totalAmount", "status", "orderDate","pricePerUnit",)    
     
-# instantiate objs based on Marshmallow schemas
+'''instantiate objs based on Marshmallow schemas'''
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 apidata_schema = ApiDataSchema()
@@ -140,10 +162,8 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True)
-#------------------------------------------------------------------------------
-# Configure Swagger UI
-# SWAGGER_URL = '/swagger1'
-# API_URL = '/swagger1.json'
+'''--------------------------------------------------------------------------------------------------'''
+'''Configure Swagger UI'''
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
@@ -154,7 +174,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     }
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-#------------------------------------------------------------------------------
+'''--------------------------------------------------------------------------------------------------'''
 
 @app.route("/")
 def home():
@@ -164,12 +184,12 @@ def home():
 def shop():
     return render_template("shop.html")
 
-# HTTP Methods and Endpoints
+'''HTTP Methods and Endpoints'''
 
-# --USER MANAGEMENT--
-#------------------------------------------------------------------------------
-# --AUTHENTICATION--
-# User Registration
+'''--USER MANAGEMENT--'''
+'''--------------------------------------------------------------------------------------------------'''
+'''--AUTHENTICATION--'''
+'''User Registration'''
 @app.post("/auth/register")
 def users_registration():
  """endpoint uses json to register user details to db"""
@@ -195,9 +215,9 @@ def users_login():
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-#------------------------------------------------------------------------------
-# --RETRIEVING SCIENTIFIC DATA--
-# Fetching All Scientific Data
+'''--------------------------------------------------------------------------------------------------'''
+'''--RETRIEVING SCIENTIFIC DATA--'''
+'''Fetching All Scientific Data'''
 @app.get("/api/get-all-data")
 def get_all_data():
  apidata = Apidata.query.all()
@@ -229,21 +249,21 @@ def create_data():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return apidata_schema.jsonify(newApiData)
 
-# Update Specific Scientific Data elements like tempature only
+'''Update Specific Scientific Data elements like tempature only'''
 @app.patch("/api/update-data")
 def update_data_field():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-# Update Scientific Data
+'''Update Scientific Data'''
 @app.put("/api/update-data/<dataId>")
 def update_data():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-# Upload Bulk Scientific Data
+'''Upload Bulk Scientific Data'''
 # @app.post("/api/add-data/bulk")
 # def create_data_bulk():
 #  json_data = request.get_json() # req.get_json() used to access json sent
@@ -263,9 +283,9 @@ def update_data():
 #  print (json.dumps(json_data, indent=4)) # used for debugging purposes
 #  return apidata_schema.jsonify(newBulkApiData)
 
-#------------------------------------------------------------------------------
-# --RETRIEVING ANALYTIC DATA--
-# Fetching Predictive analytics Data
+'''--------------------------------------------------------------------------------------------------'''
+'''--RETRIEVING ANALYTIC DATA--'''
+'''Fetching Predictive analytics Data'''
 @app.get("/api/analytics/predictive")
 def get_analytic_data():
  analytics = Analytic.query.all()
@@ -287,44 +307,135 @@ def add_analytic_data():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return analytic_schema.jsonify(newAnalytic)
 
-#------------------------------------------------------------------------------
-# --ADMINISTRATIVE ACTION--
-# Get Products
+'''--------------------------------------------------------------------------------------------------'''
+'''--ADMINISTRATIVE ACTION--'''
+'''Get Products'''
 @app.get("/api/get-all-products")
 def get_all_product_data():
  products = Product.query.all()
  return products_schema.jsonify(products)
 
-# Get Specific Products
+'''Get Specific Products'''
 @app.get("/api/get-products/<productId>")
 def get_product_data(productId):
  product = Product.query.filter_by(productId=productId).first()
  return product_schema.jsonify(product)
 
-# Add new Product
+'''Add new Product'''
 @app.post("/api/add-product")
 def create_product():
- json_data = request.get_json() # req.get_json() used to access json sent
- print(json_data) # used for debugging purposes
+ data = request.get_json() # req.get_json() used to access json sent
+ print(data) # used for debugging purposes
  newProduct = Product (
- productId = json_data['productId'],
- name = json_data['name'],
- description = json_data['description'],
- price = json_data['price'],
- stock = json_data['stock']
+ productId = data['productId'],
+ name = data['name'],
+ description = data['description'],
+ price = data['price'],
+ stock = data['stock']
  )
  db.session.add(newProduct)
  db.session.commit()
  print ("New Product added:")
- print (json.dumps(json_data, indent=4)) # used for debugging purposes
+ print (json.dumps(data, indent=4)) # used for debugging purposes
  return product_schema.jsonify(newProduct)
+
+'''Add Bulk Products'''
+@app.post("/api/ass-product/bulk")
+def add_bulk_product():
+ data = request.get_json()
+ print(data)
+  # Validate the request body
+ if not isinstance(data, list):
+    return jsonify({"msg": "Invalid input. Expected a list of products."}), 400
+
+ products = []
+ for product_data in data:
+ # Validate each product
+    if not all(key in product_data for key in ["productId", "name", "price", "stock"]):
+        return jsonify({"msg": "Missing required fields in one or more products."}), 400
+
+    # Create a new product instance
+    new_product = Product(
+    productId = product_data['productId'],
+    name=product_data["name"],
+    description=product_data.get("description"),  # Optional field
+    price=product_data["price"],
+    stock=product_data["stock"]
+    )
+    products.append(new_product)
+    # Add all products to the session and commit
+    try:
+        db.session.add_all(products)
+        db.session.commit()
+        return jsonify({
+            "msg": f"{len(products)} products created successfully.",
+            "products": [product.to_dict() for product in products]
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Failed to create products", "error": str(e)}), 500
 
 # Update Product Data
 @app.put("/api/update-product/<productId>")
-def update_product():
+def update_product(productId):
  data = request.get_json() # access data from POST request
- print(json.dumps(data,indent=4))
- return jsonify(data)
+
+ """Replace a product with new details"""
+ data = request.get_json()
+
+    # Fetch the product by ID
+ product = Product.query.get(productId)
+ if not product:
+    return jsonify({"msg": "Product not found"}), 404
+
+ '''Replace all fields with new values''' 
+ product.name = data.get('name')
+ product.description = data.get('description')
+ product.price = data.get('price')
+ product.stock = data.get('stock')
+
+ '''Commit the changes'''
+ try:
+    db.session.commit()
+    return jsonify({
+            "msg": "Product replaced successfully",
+            "product": product.to_dict()
+    }), 200
+ except Exception as e:
+    db.session.rollback()
+    return jsonify({"msg": "Failed to replace product", "error": str(e)}), 500
+
+@app.patch("/api/update-product/<productId>")
+def edit_product(productId):
+ """Endpoint to update specific fields of a product"""
+ data = request.get_json()
+
+ # Find the product by ID
+ product = Product.query.get(productId)
+ if not product:
+    return jsonify({"msg": "Product not found"}), 404
+
+ # Update only the fields provided in the request
+ if "name" in data:
+    product.name = data["name"]
+ if "description" in data:
+    product.description = data["description"]
+ if "price" in data:
+    product.price = data["price"]
+ if "stock" in data:
+    product.stock = data["stock"]
+
+ # Commit changes to the database
+ try:
+        db.session.commit()
+        return jsonify({
+            "msg": "Product updated successfully",
+            "product": product.to_dict()
+        }), 200
+ except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Failed to update product", "error": str(e)}), 500
+ 
 
 @app.delete('/api/delete-product/<productId>')
 def delete_product(productId):
@@ -335,7 +446,7 @@ def delete_product(productId):
 #------------------------------------------------------------------------------
 # --USER ACCOUNT MANAGEMENT--
 
-# Retrieve Data of all User
+"""Retrieve Data of all User"""
 @app.get("/api/get-user-profile")
 def get_all_user_profile():
  """endpoint uses route parameters to determine user to be queried from db"""
@@ -353,6 +464,26 @@ def get_user_profile(profileId):
 @app.patch("/api/update-user-profile/<profileId>")
 def update_user_profile(profileId):
  data = request.get_json() # access data from POST request
+ user = User.query.get(profileId)
+ if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+ if "firstname" in data:
+    user.firstname = data["firstname"]
+ if "lastname" in data:
+    user.lastname = data["lastname"]
+ if "email" in data:
+    user.email = data["email"]
+ if "role" in data:
+    user.role = data["role"]
+
+ try:
+    db.session.commit()
+    return jsonify({"msg": "User updated successfully", "user": user.to_dict()}), 200
+ except Exception as e:
+    db.session.rollback()
+    return jsonify({"msg": "Failed to update user", "error": str(e)}), 500
+
  print(json.dumps(data,indent=4))
  return jsonify(data)
 

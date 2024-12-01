@@ -1,14 +1,21 @@
 # test root route
 curl --request GET http://127.0.0.1:5000
 
-# test retrieving scientific
+# test retrieving data
 curl --request GET http://127.0.0.1:5000/api/get-all-data
+
+
+# test retrieving specific data
+curl --request GET http://127.0.0.1:5000/api/get-all-data/2
 
 # test retrieving predictive analytic data
 curl --request GET http://127.0.0.1:5000/api/analytics/predictive
 
-# test retrieving predictive analytic data
+# test retrieving user
 curl --request GET http://127.0.0.1:5000/api/get-user-profile
+
+# test retrieving specific user
+curl --request GET http://127.0.0.1:5000/api/get-user-profile/2
 
 # test update a specific field predictive analytic data
 curl --request PATCH http://127.0.0.1:5000/api/update-data \
@@ -29,10 +36,13 @@ curl --request PUT http://127.0.0.1:5000/api/update-product \
 '{"name":"Apple MacBook Pro 16", "year":2022,"price":2399.99,"CPU model":"M1","Hard disk size":"1 TB","color":"space grey"}'
 
 # test update a user profile data
-curl --request PATCH http://127.0.0.1:5000/api/update-user-profile \
+curl --request PATCH http://127.0.0.1:5000/api/update-user-profile/2 \
 --header "Content-Type: application/json" \
 --data
-'{"name":"Apple MacBook Pro 16"}'
+'{
+    "firstname": "Luffy",
+    "role": "researcher"
+}'
 
 # test delete product route with query parameters
 curl --request DELETE http://127.0.0.1:5000/api/delete-product?product_id=2
