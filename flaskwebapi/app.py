@@ -6,28 +6,30 @@ Purpose: Basic Flask Server for RoundSphere Website
 
 from flask import Flask,request,render_template,jsonify
 import json
-'''SQLAlchemy is an Object Relational Mapper allowing decoupling of db operations'''
+"""SQLAlchemy is an Object Relational Mapper allowing decoupling of db operations"""
 from flask_sqlalchemy import SQLAlchemy
-'''Marshmallow is an object serialization/deserialization library'''
+"""Marshmallow is an object serialization/deserialization library"""
 from flask_marshmallow import Marshmallow
 from sqlalchemy.sql import func
 from flask_swagger_ui import get_swaggerui_blueprint
 
-
 app = Flask(__name__)
 
-'''SQLAlchemy configuration'''
+"""SQLAlchemy configuration"""
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///roundspheres.db' # path to db
 app.config['SQLALCHEMY_ECHO'] = True # echoes SQL for debug
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-'''--------------------------------------------------------------------------------------------------'''
-'''instantiate db obj using the SQLAlchemy class with the Flask app obj as arg'''
+
+"""--------------------------------------------------------------------------------------------------"""
+"""instantiate db obj using the SQLAlchemy class with the Flask app obj as arg"""
 db = SQLAlchemy(app)
-'''--------------------------------------------------------------------------------------------------'''
-'''Marshmallow must be initialised after SQLAlchemy'''
+
+"""--------------------------------------------------------------------------------------------------"""
+"""Marshmallow must be initialised after SQLAlchemy"""
 ma = Marshmallow(app)
-'''--------------------------------------------------------------------------------------------------'''
-'''class def for SQLAlchemy ORM'''
+
+"""--------------------------------------------------------------------------------------------------"""
+"""class def for SQLAlchemy ORM"""
 class User(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     # user_id       = db.Column(db.String(80), primary_key=True)
@@ -52,7 +54,7 @@ class User(db.Model):
             "created_at": self.created_at.isoformat()
         }
       
-'''APIData'''
+"""APIData"""
 class Apidata(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     __tablename__ = 'IoT_data'
@@ -68,7 +70,7 @@ class Apidata(db.Model):
     def __repr__(self):
         return '<Apidata %r>' % self.dataId
 
-'''AnalyticData'''
+"""AnalyticData"""
 class Analytic(db.Model):
     """Definition of the User Model used by SQLAlchemy"""
     __tablename__ = 'Analytic_data'
@@ -82,7 +84,7 @@ class Analytic(db.Model):
     def __repr__(self):
         return '<Analyticdata %r>' % self.analyticId
       
-'''Product''' 
+"""Product"""
 class Product(db.Model):
     """Definition of the Product Model used by SQLAlchemy"""
     __tablename__ = 'Product_data'
@@ -108,7 +110,8 @@ class Product(db.Model):
             "stock": self.stock,
             "created_at": self.created_at.isoformat()
         }
-'''Order''' 
+
+"""Order""" 
 class Order(db.Model):
     """Definition of the Order Model used by SQLAlchemy"""
     __tablename__ = 'Order_data'
@@ -124,8 +127,9 @@ class Order(db.Model):
  
     def __repr__(self):
         return '<Order %r>' % self.orderId
-'''--------------------------------------------------------------------------------------------------'''
-'''class def for Marshmallow serialization'''
+
+"""--------------------------------------------------------------------------------------------------"""
+"""class def for Marshmallow serialization"""
 class UserSchema(ma.SQLAlchemyAutoSchema):
  """Definition used by serialization library based on User Model"""
  class Meta:
@@ -151,7 +155,7 @@ class OrderSchema(ma.SQLAlchemyAutoSchema):
  class Meta:
     fields = ("orderId","userId","productId","orderItemId","quantity","totalAmount", "status", "orderDate","pricePerUnit",)    
     
-'''instantiate objs based on Marshmallow schemas'''
+"""instantiate objs based on Marshmallow schemas"""
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 apidata_schema = ApiDataSchema()
@@ -162,8 +166,9 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True)
-'''--------------------------------------------------------------------------------------------------'''
-'''Configure Swagger UI'''
+
+"""--------------------------------------------------------------------------------------------------"""
+"""Configure Swagger UI"""
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
@@ -174,7 +179,8 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     }
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-'''--------------------------------------------------------------------------------------------------'''
+
+"""---------------------------------------------------------------------------------------------------"""
 
 @app.route("/")
 def home():
@@ -184,12 +190,13 @@ def home():
 def shop():
     return render_template("shop.html")
 
-'''HTTP Methods and Endpoints'''
+"""HTTP Methods and Endpoints"""
 
-'''--USER MANAGEMENT--'''
-'''--------------------------------------------------------------------------------------------------'''
-'''--AUTHENTICATION--'''
-'''User Registration'''
+"""--USER MANAGEMENT--"""
+
+"""--------------------------------------------------------------------------------------------------"""
+"""--AUTHENTICATION--"""
+"""User Registration"""
 @app.post("/auth/register")
 def users_registration():
  """endpoint uses json to register user details to db"""
@@ -215,9 +222,9 @@ def users_login():
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-'''--------------------------------------------------------------------------------------------------'''
-'''--RETRIEVING SCIENTIFIC DATA--'''
-'''Fetching All Scientific Data'''
+"""--------------------------------------------------------------------------------------------------"""
+"""--RETRIEVING SCIENTIFIC DATA--"""
+"""Fetching All Scientific Data"""
 @app.get("/api/get-all-data")
 def get_all_data():
  apidata = Apidata.query.all()
@@ -249,21 +256,21 @@ def create_data():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return apidata_schema.jsonify(newApiData)
 
-'''Update Specific Scientific Data elements like tempature only'''
+"""Update Specific Scientific Data elements like temperature only"""
 @app.patch("/api/update-data")
 def update_data_field():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-'''Update Scientific Data'''
+"""Update Scientific Data"""
 @app.put("/api/update-data/<dataId>")
 def update_data():
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-'''Upload Bulk Scientific Data'''
+"""Upload Bulk Scientific Data"""
 # @app.post("/api/add-data/bulk")
 # def create_data_bulk():
 #  json_data = request.get_json() # req.get_json() used to access json sent
@@ -283,9 +290,9 @@ def update_data():
 #  print (json.dumps(json_data, indent=4)) # used for debugging purposes
 #  return apidata_schema.jsonify(newBulkApiData)
 
-'''--------------------------------------------------------------------------------------------------'''
-'''--RETRIEVING ANALYTIC DATA--'''
-'''Fetching Predictive analytics Data'''
+"""--------------------------------------------------------------------------------------------------"""
+"""--RETRIEVING ANALYTIC DATA--"""
+"""Fetching Predictive analytics Data"""
 @app.get("/api/analytics/predictive")
 def get_analytic_data():
  analytics = Analytic.query.all()
@@ -307,21 +314,21 @@ def add_analytic_data():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return analytic_schema.jsonify(newAnalytic)
 
-'''--------------------------------------------------------------------------------------------------'''
-'''--ADMINISTRATIVE ACTION--'''
-'''Get Products'''
+"""--------------------------------------------------------------------------------------------------"""
+"""--ADMINISTRATIVE ACTION--"""
+"""Get Products"""
 @app.get("/api/get-all-products")
 def get_all_product_data():
  products = Product.query.all()
  return products_schema.jsonify(products), 200
 
-'''Get Specific Products'''
+"""Get Specific Products"""
 @app.get("/api/get-products/<productId>")
 def get_product_data(productId):
  product = Product.query.filter_by(productId=productId).first()
  return product_schema.jsonify(product), 200
 
-'''Add new Product'''
+"""Add new Product"""
 @app.post("/api/add-product")
 def create_product():
  data = request.get_json() # req.get_json() used to access json sent
@@ -339,8 +346,13 @@ def create_product():
  print (json.dumps(data, indent=4)) # used for debugging purposes
  return product_schema.jsonify(newProduct), 200
 
+<<<<<<< HEAD
 '''Add Bulk Products'''
 @app.post("/api/add-product/bulk")
+=======
+"""Add Bulk Products"""
+@app.post("/api/ass-product/bulk")
+>>>>>>> 5977a1fdf5f157e9a0e909a4e35cc386962bbc89
 def add_bulk_product():
  data = request.get_json()
  print(data)
@@ -424,13 +436,13 @@ def update_product(productId):
  if not product:
     return jsonify({"msg": "Product not found"}), 404
 
- '''Replace all fields with new values''' 
+ """Replace all fields with new values""" 
  product.name = data.get('name')
  product.description = data.get('description')
  product.price = data.get('price')
  product.stock = data.get('stock')
 
- '''Commit the changes'''
+ """Commit the changes"""
  try:
     db.session.commit()
     return jsonify({
@@ -479,8 +491,13 @@ def delete_product(productId):
  db.session.commit()
  return {"Product deleted with route params" : f"productId: {productId}"}
 
+<<<<<<< HEAD
 '''--------------------------------------------------------------------------------------------------'''
 '''--USER ACCOUNT MANAGEMENT--'''
+=======
+"""------------------------------------------------------------------------------"""
+"""--USER ACCOUNT MANAGEMENT--"""
+>>>>>>> 5977a1fdf5f157e9a0e909a4e35cc386962bbc89
 
 """Retrieve Data of all User"""
 @app.get("/api/get-user-profile")
