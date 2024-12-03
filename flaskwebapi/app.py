@@ -313,13 +313,13 @@ def add_analytic_data():
 @app.get("/api/get-all-products")
 def get_all_product_data():
  products = Product.query.all()
- return products_schema.jsonify(products)
+ return products_schema.jsonify(products), 200
 
 '''Get Specific Products'''
 @app.get("/api/get-products/<productId>")
 def get_product_data(productId):
  product = Product.query.filter_by(productId=productId).first()
- return product_schema.jsonify(product)
+ return product_schema.jsonify(product), 200
 
 '''Add new Product'''
 @app.post("/api/add-product")
@@ -337,45 +337,81 @@ def create_product():
  db.session.commit()
  print ("New Product added:")
  print (json.dumps(data, indent=4)) # used for debugging purposes
- return product_schema.jsonify(newProduct)
+ return product_schema.jsonify(newProduct), 200
 
 '''Add Bulk Products'''
-@app.post("/api/ass-product/bulk")
+@app.post("/api/add-product/bulk")
 def add_bulk_product():
  data = request.get_json()
  print(data)
-  # Validate the request body
+ '''Validate the request body'''
  if not isinstance(data, list):
     return jsonify({"msg": "Invalid input. Expected a list of products."}), 400
 
- products = []
- for product_data in data:
- # Validate each product
-    if not all(key in product_data for key in ["productId", "name", "price", "stock"]):
-        return jsonify({"msg": "Missing required fields in one or more products."}), 400
+#  products = []
+#  for product_data in data:
+#     '''Validate each product'''
+#     if not all(key in product_data for key in ["productId", "name", "price", "stock"]):
+#         return jsonify({"msg": "Missing required fields in one or more products."}), 400
 
-    # Create a new product instance
-    new_product = Product(
-    productId = product_data['productId'],
-    name=product_data["name"],
-    description=product_data.get("description"),  # Optional field
-    price=product_data["price"],
-    stock=product_data["stock"]
-    )
-    products.append(new_product)
-    # Add all products to the session and commit
+#     '''Create a new product instance'''
+#     new_product = Product(
+#     productId = product_data['productId'],
+#     name=product_data["name"],
+#     description=product_data.get("description"),  # Optional field
+#     price=product_data["price"],
+#     stock=product_data["stock"]
+#     )
+#     products.append(new_product)
+    
+#  '''Add all products to the session and commit'''
+#  try:
+#     db.session.add_all(products)
+#     db.session.commit()
+#     return jsonify({
+#             "msg": f"{len(products)} products created successfully.",
+#             "products": [product.to_dict() for product in products]
+#         }), 201
+#  except Exception as e:
+#     db.session.rollback()
+#     return jsonify({"msg": "Failed to create products", "error": str(e)}), 500
+
+ products = []
+ errors = []
+ for idx, product_data in enumerate(data):
+        # Validate required fields
+    if not all(key in product_data for key in ["name", "price", "stock"]):
+     errors.append({"index": idx, "msg": "Missing required fields"})
+     continue
+
     try:
-        db.session.add_all(products)
-        db.session.commit()
-        return jsonify({
-            "msg": f"{len(products)} products created successfully.",
-            "products": [product.to_dict() for product in products]
-        }), 201
+     # Create a new product instance
+     new_product = Product(
+        name=product_data["name"],
+        description=product_data.get("description"),
+        price=product_data["price"],
+        stock=product_data["stock"]
+        )
+     products.append(new_product)
+    except Exception as e:
+        errors.append({"index": idx, "msg": str(e)})
+
+    # Add valid products to the session
+    try:
+        if products:
+            db.session.add_all(products)
+            db.session.commit()
     except Exception as e:
         db.session.rollback()
         return jsonify({"msg": "Failed to create products", "error": str(e)}), 500
 
-# Update Product Data
+    return jsonify({
+        "msg": f"{len(products)} products created successfully.",
+        "products": [product.to_dict() for product in products],
+        "errors": errors
+    }), 200 if products else 400
+
+'''Update Product Data'''
 @app.put("/api/update-product/<productId>")
 def update_product(productId):
  data = request.get_json() # access data from POST request
@@ -383,7 +419,7 @@ def update_product(productId):
  """Replace a product with new details"""
  data = request.get_json()
 
-    # Fetch the product by ID
+ '''Fetch the product by ID'''
  product = Product.query.get(productId)
  if not product:
     return jsonify({"msg": "Product not found"}), 404
@@ -410,12 +446,12 @@ def edit_product(productId):
  """Endpoint to update specific fields of a product"""
  data = request.get_json()
 
- # Find the product by ID
+ '''Find the product by ID'''
  product = Product.query.get(productId)
  if not product:
     return jsonify({"msg": "Product not found"}), 404
 
- # Update only the fields provided in the request
+ '''Update only the fields provided in the request'''
  if "name" in data:
     product.name = data["name"]
  if "description" in data:
@@ -425,7 +461,7 @@ def edit_product(productId):
  if "stock" in data:
     product.stock = data["stock"]
 
- # Commit changes to the database
+ '''Commit changes to the database'''
  try:
         db.session.commit()
         return jsonify({
@@ -436,15 +472,15 @@ def edit_product(productId):
         db.session.rollback()
         return jsonify({"msg": "Failed to update product", "error": str(e)}), 500
  
-
+'''Delete a product'''
 @app.delete('/api/delete-product/<productId>')
 def delete_product(productId):
  User.query.filter_by(productId=productId).delete()
  db.session.commit()
  return {"Product deleted with route params" : f"productId: {productId}"}
 
-#------------------------------------------------------------------------------
-# --USER ACCOUNT MANAGEMENT--
+'''--------------------------------------------------------------------------------------------------'''
+'''--USER ACCOUNT MANAGEMENT--'''
 
 """Retrieve Data of all User"""
 @app.get("/api/get-user-profile")
@@ -453,14 +489,14 @@ def get_all_user_profile():
  users = User.query.all()
  return users_schema.jsonify(users)
 
-# Retrieve Data of a specific User
+'''Retrieve Data of a specific User'''
 @app.get("/api/get-user-profile/<profileId>")
 def get_user_profile(profileId):
  """endpoint uses route parameters to determine user to be queried from db"""
  user = User.query.filter_by(profileId=profileId).first()
  return user_schema.jsonify(user)
 
-# Allow User update profile information
+'''Allow User update profile information'''
 @app.patch("/api/update-user-profile/<profileId>")
 def update_user_profile(profileId):
  data = request.get_json() # access data from POST request
@@ -484,19 +520,16 @@ def update_user_profile(profileId):
     db.session.rollback()
     return jsonify({"msg": "Failed to update user", "error": str(e)}), 500
 
- print(json.dumps(data,indent=4))
- return jsonify(data)
-
-# Delete user account---only admin has this permission
+'''Delete user account---only admin has this permission'''
 @app.delete('/api/delete-user-profile/<profileId>')
 def delete_user_profile(profileId):
  User.query.filter_by(profileId=profileId).delete()
  db.session.commit()
  return {"User deleted with route params" : f"profiled: {profileId}"}
 
-#------------------------------------------------------------------------------
-# --ORDER MANAGEMENT--
-# Add new order
+'''--------------------------------------------------------------------------------------------------'''
+'''--ORDER MANAGEMENT--'''
+'''Add new order'''
 @app.post("/api/add-orders")
 def create_order():
  json_data = request.get_json() # req.get_json() used to access json sent
@@ -514,7 +547,7 @@ def create_order():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return order_schema.jsonify(newOrder)
 
-# Add new order item
+'''Add new order item'''
 @app.post("/api/add-order-item")
 def create_order_item():
  json_data = request.get_json() # req.get_json() used to access json sent
@@ -532,27 +565,27 @@ def create_order_item():
  print (json.dumps(json_data, indent=4)) # used for debugging purposes
  return order_schema.jsonify(newOrderItem)
 
-
-# get order
+'''get order'''
 @app.get("/api/orders")
 def get_orders():
  orders = Order.query.all()
  return orders_schema.jsonify(orders)
 
-# Retrieve Data of a specific Order
+'''Retrieve Data of a specific Order'''
 @app.get("/api/orders/<orderId>")
 def get_single_order(orderId):
  """endpoint uses route parameters to determine user to be queried from db"""
  order = Order.query.filter_by(orderId=orderId).first()
  return orders_schema.jsonify(order)
 
-# Allow Admin update profile information
+'''Allow Admin update profile information'''
 @app.patch("/api/orders/<orderId>")
 def update_order(profileId):
  data = request.get_json() # access data from POST request
  print(json.dumps(data,indent=4))
  return jsonify(data)
 
-# Port
+'''--------------------------------------------------------------------------------------------------'''
+'''Port'''
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
