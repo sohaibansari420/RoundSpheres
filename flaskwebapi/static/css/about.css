@@ -16,11 +16,17 @@
 } */
 
 /* Hero Section (Shared Style for About Page) */
+
 .hero {
-    background: url('about-hero.jpg') no-repeat center center/cover;
-    color: white;
+    color: black; 
     text-align: center;
     padding: 4rem 0;
+
+    
+}
+
+.container h1,p{
+    color: black;
 }
 
 .hero h1 {
@@ -31,18 +37,20 @@
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
+    color: black;
 }
 
 /* About Section */
 .about-section {
     padding: 3rem 0;
-    background: #f0f9ff; /* Light blue background */
+    background: #0d9bfa; /* Light blue background */
 }
 
 .about-content {
     display: flex;
     align-items: center;
     gap: 2rem;
+    color: black;
     flex-wrap: wrap;
 }
 
