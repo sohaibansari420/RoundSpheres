@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Home {% endblock title %}
+{% block title %} Home {% endblock title %}
 
 {% block body %} 
 <link rel="stylesheet" href="../static/css/base.css">
@@ -16,11 +16,30 @@
     <div class="container">
         <h1>Welcome to RoundSpheres</h1>
         <p>Innovative solutions for water conservation and sustainability.</p>
-        <a href="/solutions/" class="btn">Explore Our Solutions</a>
+        <a href="shop.html" class="btn">Explore Our Solutions</a>
     </div>
 </section>
 
-<section class="features">
+
+<header>
+        <h1>Our Products</h1>
+        <p>Explore our eco-friendly water conservation solutions.</p>
+    </header>
+    <main class="products-container">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p class="price">${{ product.price }}</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+        {% endfor %}
+    </main>
+
+
+
+  <section class="features">
     <div class="container">
         <h2>Why Choose Us?</h2>
         <div class="feature-grid">

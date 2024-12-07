@@ -101,3 +101,6 @@ class Product(models.Model):
         ordering = ['name']  # Orders alphabetically by product name
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+        
+        
+  

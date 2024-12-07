@@ -7,10 +7,11 @@
 
 <link rel="stylesheet" href="../static/css/signup.css" />
 
-<div class="auth-container">
+<div class="auth-container" 
+>
   <div class="auth-box">
     <h1>Sign Up</h1>
-    <form method="post">
+    <form method="post" action="{% url 'sendemails' %}">
       {% csrf_token %}
       <div class="form-group">
         <label for="username">Username</label>
