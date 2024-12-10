@@ -346,19 +346,14 @@ def create_product():
  print (json.dumps(data, indent=4)) # used for debugging purposes
  return product_schema.jsonify(newProduct), 200
 
-<<<<<<< HEAD
-'''Add Bulk Products'''
-@app.post("/api/add-product/bulk")
-=======
-"""Add Bulk Products"""
-@app.post("/api/ass-product/bulk")
->>>>>>> 5977a1fdf5f157e9a0e909a4e35cc386962bbc89
-def add_bulk_product():
- data = request.get_json()
- print(data)
- '''Validate the request body'''
- if not isinstance(data, list):
-    return jsonify({"msg": "Invalid input. Expected a list of products."}), 400
+# """Add Bulk Products"""
+# @app.post("/api/ass-product/bulk")
+# def add_bulk_product():
+#  data = request.get_json()
+#  print(data)
+#  '''Validate the request body'''
+#  if not isinstance(data, list):
+#     return jsonify({"msg": "Invalid input. Expected a list of products."}), 400
 
 #  products = []
 #  for product_data in data:
@@ -491,13 +486,8 @@ def delete_product(productId):
  db.session.commit()
  return {"Product deleted with route params" : f"productId: {productId}"}
 
-<<<<<<< HEAD
-'''--------------------------------------------------------------------------------------------------'''
-'''--USER ACCOUNT MANAGEMENT--'''
-=======
 """------------------------------------------------------------------------------"""
 """--USER ACCOUNT MANAGEMENT--"""
->>>>>>> 5977a1fdf5f157e9a0e909a4e35cc386962bbc89
 
 """Retrieve Data of all User"""
 @app.get("/api/get-user-profile")
