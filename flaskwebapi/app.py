@@ -12,8 +12,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sqlalchemy.sql import func
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = 'django-insecure-9i8xk#_3t5v^(uem232=$-xo_v0#ymj=l#seg-#5ang)%98a*f'
+
+jwt = JWTManager(app)
 
 """SQLAlchemy configuration"""
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///roundspheres.db' # path to db
@@ -226,7 +232,9 @@ def users_login():
 """--RETRIEVING SCIENTIFIC DATA--"""
 """Fetching All Scientific Data"""
 @app.get("/api/get-all-data")
+@jwt_required()
 def get_all_data():
+ current_data = get_jwt_identity()
  apidata = Apidata.query.all()
  return apidatas_schema.jsonify(apidata)
 
@@ -595,4 +603,4 @@ def update_order(profileId):
 '''--------------------------------------------------------------------------------------------------'''
 '''Port'''
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)  
