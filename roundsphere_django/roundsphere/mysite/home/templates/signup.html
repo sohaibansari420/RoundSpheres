@@ -7,8 +7,7 @@
 
 <link rel="stylesheet" href="../static/css/signup.css" />
 
-<div class="auth-container" 
->
+<div class="auth-container">
   <div class="auth-box">
     <h1>Sign Up</h1>
     <form method="post" action="{% url 'sendemails' %}">
@@ -32,6 +31,24 @@
           placeholder="Enter your email"
           required
         />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="number"
+          id="phone"
+          name="phone"
+          placeholder="Enter your phone number"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone">Role</label>
+        <select class="form-group" name="role" id="role">
+          <option value="Customer">Customer</option>
+          <option value="Researcher">Researcher</option>
+          <option value="Admin">Admin</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
