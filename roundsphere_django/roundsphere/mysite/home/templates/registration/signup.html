@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% comment %} kkk {% endcomment %}
 <br />
 
-{% block title %}Signup {% endblock title %} {% comment %} kkk {% endcomment %}
+{% block title %} Signup {% endblock title %} {% comment %} kkk {% endcomment %}
 <br />
 {% block body %}
 
-<link rel="stylesheet" href="../static/css/signup.css" />
+<link rel="stylesheet" href="../../static/css/signup.css" />
 
 <div class="auth-container">
   <div class="auth-box">
@@ -13,12 +13,22 @@
     <form method="post" action="{% url 'sendemails' %}">
       {% csrf_token %}
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="firstname">Firstname</label>
         <input
           type="text"
-          id="username"
-          name="username"
-          placeholder="Choose a username"
+          id="firstname"
+          name="firstname"
+          placeholder="Enter your Firstname"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Lastname</label>
+        <input
+          type="text"
+          id="lastname"
+          name="lastname"
+          placeholder="Enter your Lastname"
           required
         />
       </div>
@@ -43,12 +53,34 @@
         />
       </div>
       <div class="form-group">
-        <label for="phone">Role</label>
-        <select class="form-group" name="role" id="role">
-          <option value="Customer">Customer</option>
-          <option value="Researcher">Researcher</option>
-          <option value="Admin">Admin</option>
-        </select>
+        <label for="address">Address</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          placeholder="Enter your Address"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="postcode">Postcode</label>
+        <input
+          type="text"
+          id="postcode"
+          name="postcode"
+          placeholder="Enter your Postcode"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Choose a username"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password">Password</label>

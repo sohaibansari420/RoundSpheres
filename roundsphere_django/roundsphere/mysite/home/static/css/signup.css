@@ -1,13 +1,17 @@
 /* Auth Container */
 
 .auth-container {
-  width: 100%;
+  width: 10%;
   padding: 20px;
   background: #fff;
   align-items: center;
   margin-top: 150px;
   max-width: 398px;
   margin-bottom: 400px;
+  /* background: url(/images/background.png); */
+  /* background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain; */
   /* display: flex;
   justify-content: center;
   align-items: center; */
@@ -16,6 +20,10 @@
   box-shadow: 0 -1px 101px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
+
+/* .auth-box {
+  width: 60rem;
+} */
 
 .auth-box h1 {
   font-size: 1.8rem;
