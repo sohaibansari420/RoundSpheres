@@ -13,6 +13,7 @@ from flask_marshmallow import Marshmallow
 from sqlalchemy.sql import func
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -45,10 +46,17 @@ class User(db.Model):
     lastname  = db.Column(db.String(80), nullable=False)
     email    = db.Column(db.String(80), nullable=False)
     role     = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.Text())
     created_at    = db.Column(db.DateTime(timezone=True), server_default=func.now())
  
     def __repr__(self):
         return '<User %r>' % self.profileId
+    
+    def set_password(self,password):
+        self.password = generate_password_hash(password)
+        
+    def check_password(self,password):
+        return check_password_hash(self.password,password)
     
     def to_dict(self):
         return {
