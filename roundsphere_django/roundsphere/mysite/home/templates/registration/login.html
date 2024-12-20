@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Login {% endblock title %} 
+{% block body %}
+
+<link rel="stylesheet" href="../../static/css/login.css" />
+<div class="auth-container">
+  <div class="auth-box">
+    <h1>Login</h1>
+    <form method="post" action="{% url 'shopview' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn" value="login">Login</button>
+      {% comment %} <input type="hidden" name="next" value="{% url '/' %}" /> {% endcomment %}
+    </form>
+    <p>Don't have an account? <a href="/auth/signup/">Sign up</a></p>
+  </div>
+  <p>
+    <a href="/">Back to dashboard</a>
+  </p>
+</div>
+
+{% endblock body %}

@@ -11,8 +11,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .forms import RegistrationForm
 from .utils import email_verification_token
-from django.contrib.auth import login
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 
 
 # Create your views here.
@@ -20,29 +21,29 @@ from django.http import HttpResponse
 def index(request):
     # if request.user.is_anonymous:
     #     return redirect("/login")
-    return render(request, 'index.html') 
+    return render(request, 'users/index.html') 
     
     # return HttpResponse("this is homepage")
 
 def about(request):
-    return render(request, 'about.html') 
+    return render(request, 'users/about.html') 
 
     # return HttpResponse("this is about page")
 
 def contact(request):
-    return render(request, 'contact.html') 
+    return render(request, 'users/contact.html') 
 
     # return HttpResponse("this is Contact page")
 
 def blog(request):
-    return render(request, 'blog.html') 
+    return render(request, 'users/blog.html') 
 
     
     # return HttpResponse("this is shop page")
     
     
 def data(request):
-    return render(request, 'data.html') 
+    return render(request, 'users/data.html') 
 
 
 def login(request):
@@ -66,24 +67,32 @@ def login(request):
 
 
 def shop(request):
-    return render(request, 'shop.html') 
+    return render(request, 'users/shop.html') 
 
 def signup(request):
-    return render(request, 'signup.html') 
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect(reverse("index"))
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {"form": form}) 
 
 
 
 def products_view(request):
     # Fetch all products from the database
     products = Product.objects.all()
-    return render(request, 'products.html', {'products': products})
+    return render(request, 'user/products.html', {'products': products})
 
 def sendemails(request):
-       return render(request, 'login.html') 
+       return render(request, 'registration/signup.html') 
    
    
 def shopview(request):
-    return render(request, 'shop.html') 
+    return render(request, 'users/shop.html') 
 
 # def signup(request):
 #     if request.method == 'POST':

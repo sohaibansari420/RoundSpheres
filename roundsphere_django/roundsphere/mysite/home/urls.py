@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from home import views
 from . import views
 
@@ -10,10 +10,11 @@ urlpatterns = [
     path("contact", views.contact, name='contact'),
     path("shop", views.shop, name='shop'),
     path("blog", views.blog, name='blog'),
-    path("login/", views.login, name='login/'),
-    path("signup/", views.signup, name='signup'),
+    # path("login/", views.login, name='login/'),
+    path("auth/signup/", views.signup, name='signup'),
+    path("auth/", include("django.contrib.auth.urls")),
     path("data", views.data, name='data'),
-    path("logout", views.logout, name='logout'),
+    # path("logout", views.logout, name='logout'),
     
     # # Detail views for Apidata
     # path('apidata/<int:dataId>/', views.ApidataDetailView.as_view(), name='apidata-detail'),
