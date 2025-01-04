@@ -1,0 +1,170 @@
+# Base URL
+@base_url = http://127.0.0.1:5000
+
+### 1. User Management
+
+# Register a New User
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@example.com",
+  "role": "admin",
+  "password": "securepassword"
+}
+
+### Login User
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword123"
+}
+
+### Get All User Profiles
+GET {{base_url}}/api/get-user-profile
+Authorization: Bearer <YOUR_ACCESS_TOKEN>
+
+### Get Specific User Profile
+GET {{base_url}}/api/get-user-profile/1
+Authorization: Bearer <YOUR_ACCESS_TOKEN>
+
+### Update User Profile
+PATCH {{base_url}}/api/update-user-profile/1
+Authorization: Bearer <YOUR_ACCESS_TOKEN>
+Content-Type: application/json
+
+{
+  "firstname": "Jane",
+  "email": "jane.doe@example.com"
+}
+
+### Delete User Profile
+DELETE {{base_url}}/api/delete-user-profile/1
+Authorization: Bearer <YOUR_ACCESS_TOKEN>
+
+---
+
+### 2. Product Management
+
+# Add a New Product
+POST {{base_url}}/api/add-product
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "name": "RainSaver Barrel System",
+  "description": "A high-capacity barrel system for harvesting and storing rainwater.",
+  "price": 199.99,
+  "stock": 150
+}
+
+# Add Multiple Products in Bulk
+POST {{base_url}}/api/add-products/bulk
+Content-Type: application/json
+
+[
+  {
+    "name": "SolarSmart Water Heater",
+    "description": "Energy-efficient water heater powered by solar panels.",
+    "price": 299.99,
+    "stock": 50
+  },
+  {
+    "name": "EcoFlow Water Pump",
+    "description": "Sustainable water pump designed for agricultural use.",
+    "price": 129.99,
+    "stock": 100
+  }
+]
+
+# Get All Products
+GET {{base_url}}/api/get-all-products
+
+# Get Specific Product
+GET {{base_url}}/api/get-products/1
+
+# Update a Product
+PUT {{base_url}}/api/update-product/1
+Content-Type: application/json
+
+{
+  "name": "RainSaver XL",
+  "description": "An upgraded high-capacity barrel system.",
+  "price": 249.99,
+  "stock": 120
+}
+
+# Edit Specific Fields of a Product
+PATCH {{base_url}}/api/edit-product/1
+Content-Type: application/json
+
+{
+  "stock": 180
+}
+
+# Delete a Product
+DELETE {{base_url}}/api/delete-product/1
+
+---
+
+### 3. Scientific Data Management
+
+# Add IoT Data
+POST {{base_url}}/api/add-data
+Content-Type: application/json
+
+{
+  "dataId": 1,
+  "temperatureWater": "22.5",
+  "temperatureAir": "30.0",
+  "humidity": "80%",
+  "windSpeed": "15km/h",
+  "precipitation": "12mm",
+  "notes": "Collected during storm."
+}
+
+# Get All IoT Data
+GET {{base_url}}/api/get-all-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkwMTg2MSwianRpIjoiZjUyNmNkYzUtMDA0Yi00MDcyLWJlZWUtNzVhYzQxYjBhODgxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjciLCJuYmYiOjE3MzU5MDE4NjEsImNzcmYiOiJiNzNjOTAyYi00NTM5LTRjZGYtODBjMy04YzdlMDE0NDcxYzIiLCJleHAiOjE3MzU5MDI3NjEsInJvbGUiOiJ1c2VyIn0.SOI9WgV53aE2bjmImbVm2FqCIQo_yDpAJHQFKle8K_0
+
+# Update Specific IoT Data Fields
+PATCH {{base_url}}/api/edit-data
+Content-Type: application/json
+
+{
+  "temperatureWater": "25.0"
+}
+
+---
+
+### 4. Order Management
+
+# Add a New Order
+POST {{base_url}}/api/add-orders
+Content-Type: application/json
+
+{
+  "orderId": 1,
+  "userId": 1,
+  "orderDate": "2024-12-29",
+  "totalAmount": 599.97,
+  "status": "Pending"
+}
+
+# Get All Orders
+GET {{base_url}}/api/orders
+
+# Get Specific Order
+GET {{base_url}}/api/orders/1
+
+# Update an Order
+PATCH {{base_url}}/api/orders/1
+Content-Type: application/json
+
+{
+  "status": "Shipped"
+}

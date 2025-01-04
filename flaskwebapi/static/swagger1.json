@@ -1,0 +1,700 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RoundSphere API",
+    "description": "RoundSphere offers an innovative water conservation product and a data service. The product, shade balls, minimizes water evaporation, prevents algae growth, and enhances water quality in reservoirs. The service provides access to real-time and historical IoT data on environmental metrics like temperature and evaporation rates. It supports researchers with predictive modeling and scientific analysis. RoundSphere combines sustainability-focused products with advanced data services to address water scarcity.\n\n\nSome useful links:\n- [Github repository](https://github.com/sohaibansari420/RoundSpheres)\n- [RoundSphere Postman workspace](https://swe7301-group-4.postman.co/workspace/SWE7301-Group-4-Workspace~a47bff38-a672-4338-885a-988100816f00/collection/36868182-ad73a91f-84ec-4de0-abbb-898bee7bca57?action=share&creator=36868182)",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Home",
+      "description": "RoundSphere Home"
+    },
+    {
+      "name": "Authentication",
+      "description": "Register or Login"
+    },
+    {
+      "name": "IoT Data",
+      "description": "Access IoT Data"
+    },
+    {
+      "name": "Analytic",
+      "description": "Access Predictive aalytic data"
+    },
+    {
+      "name": "Product",
+      "description": "Access Predictive aalytic data"
+    },
+    {
+      "name": "User",
+      "description": "User Profiles"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Home"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Registration Successful",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User Registered Successfully"
+          },
+          "401": {
+            "description": "Email is in use"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Login Successful",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User Logged in Successfully"
+          },
+          "401": {
+            "description": "Invalid email or password"
+          }
+        }
+      }
+    },
+    "/api/get-all-data": {
+      "get": {
+        "tags": ["IoT Data"],
+        "description": "Data Fetched Sucessfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All API research data fetched Successfully"
+          },
+          "403": {
+            "description": "Unauthorized access. Please check your credentials."
+          }
+        }
+      }
+    },
+    "/api/analytics/predictive": {
+      "get": {
+        "tags": ["Analytic"],
+        "description": "Analytic Data Fetched Sucessfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Analytic Predictive Data Fetched Sucessfully'"
+          },
+          "403": {
+            "description": "Unauthorized access. Please check your credentials."
+          }
+        }
+      }
+    },
+    "/api/analytics": {
+      "post": {
+        "tags": ["Analytic"],
+        "description": "Analytic Data Added Sucessfully",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Analytic"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Analytic Predictive Data Created Sucessfully'"
+          },
+          "403": {
+            "description": "Unauthorized access. Please check your credentials."
+          }
+        }
+      }
+    },
+    "/api/add-data": {
+      "post": {
+        "tags": ["IoT Data"],
+        "description": "Data uploaded successfully",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Apidata"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "API Data uploaded successfully"
+          },
+          "400": {
+            "description": "Invalid data format."
+          }
+        }
+      }
+    },
+    "/api/update-data": {
+      "patch": {
+        "tags": ["IoT Data"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid data format."
+          }
+        }
+      }
+    },
+    "/api/update-data/{dataId}": {
+      "parameters": [
+        {
+          "name": "dataId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "put": {
+        "tags": ["IoT Data"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid data format."
+          }
+        }
+      }
+    },
+    "/api/add-data/bulk": {
+      "post": {
+        "tags": ["IoT Data"],
+        "description": "Bulk data upload successful",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Apidata"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Bulk data Uploaded Successfully"
+          },
+          "400": {
+            "description": "Invalid data format."
+          },
+          "500": {
+            "description": "Server encountered an issue processing the data."
+          }
+        }
+      }
+    },
+    "/api/get-all-products": {
+      "get": {
+        "tags": ["Product"],
+        "description": "Fetched Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All Products fetched successfully"
+          },
+          "500": {
+            "description": "Server encountered an issue processing the data."
+          }
+        }
+      }
+    },
+    "/api/get-products/{productId}": {
+      "parameters": [
+        {
+          "name": "productId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Product"],
+        "description": "Fetched Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product fetched successfully"
+          },
+          "500": {
+            "description": "Server encountered an issue processing the data."
+          }
+        }
+      }
+    },
+    "/api/add-product": {
+      "post": {
+        "tags": ["Product"],
+        "description": "Added Successfully",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product added successfully"
+          },
+          "400": {
+            "description": "Product name already exists"
+          }
+        }
+      }
+    },
+    "/api/add-products/bulk": {
+      "post": {
+        "tags": ["Product"],
+        "description": "Add multiple products in a single request.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "examples": {
+                "bulkAddExample": {
+                  "value": [
+                    {
+                      "name": "RainSaver Barrel System",
+                      "description": "A high-capacity barrel system for harvesting and storing rainwater.",
+                      "price": 199.99,
+                      "stock": 150
+                    },
+                    {
+                      "name": "SolarSmart Water Heater",
+                      "description": "An energy-efficient water heater powered by solar panels.",
+                      "price": 299.99,
+                      "stock": 50
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Products successfully added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "2 products added successfully."
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "error": {
+                            "type": "string",
+                            "example": "Price is required."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input. Expected a list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid input. Expected a list of products."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server encountered an issue processing the data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Failed to save products to the database."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "Database connection error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/update-products/{productId}": {
+      "parameters": [
+        {
+          "name": "productId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "put": {
+        "tags": ["Product"],
+        "description": "Updated Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product Details Uploaded Successfully"
+          },
+          "500": {
+            "description": "Server encountered an issue processing the data."
+          }
+        }
+      }
+    },
+    "/api/delete-products/<productId>": {
+      "delete": {
+        "tags": ["Product"],
+        "description": "Deleted Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product Deleted Successfully"
+          },
+          "400": {
+            "description": "Product does not exists or has been deleted"
+          }
+        }
+      }
+    },
+    "/api/get-user-profile": {
+      "get": {
+        "tags": ["User"],
+        "description": "Fetched Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All Profile Fetched Successfully"
+          }
+        }
+      }
+    },
+    "/api/get-user-profile/{profileId}": {
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "get": {
+        "tags": ["User"],
+        "description": "Fetched Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile Fetched Successfully"
+          }
+        }
+      }
+    },
+    "/api/update-user-profile/{profileId}": {
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "put": {
+        "tags": ["User"],
+        "description": "Updated Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile Updated Successfully"
+          }
+        }
+      }
+    },
+    "/api/delete-user-profile/{profileId}": {
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      ],
+      "delete": {
+        "tags": ["User"],
+        "description": "Deleted Successfully",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile Deleted Successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Naruto"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Uzumaki"
+          },
+          "email": {
+            "type": "string",
+            "example": "naruto@hokage.ac.uk"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "order"
+        }
+      },
+      "Apidata": {
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 15
+          },
+          "temperatureWater": {
+            "type": "number",
+            "format": "float",
+            "example": 16
+          },
+          "temperatureAir": {
+            "type": "number",
+            "format": "float",
+            "example": 18.5
+          },
+          "humidity": {
+            "type": "number",
+            "format": "float",
+            "example": 54.3
+          },
+          "windSpeed": {
+            "type": "number",
+            "format": "float",
+            "example": 31.6
+          },
+          "precipitation": {
+            "type": "number",
+            "format": "float",
+            "example": 13
+          },
+          "notes": {
+            "type": "string",
+            "example": "Cold and windy with no precipitation."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "order"
+        }
+      },
+      "Analytic": {
+        "type": "object",
+        "properties": {
+          "analyticId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 32
+          },
+          "region": {
+            "type": "string",
+            "example": "Northeast"
+          },
+          "evaporationRate": {
+            "type": "number",
+            "format": "float",
+            "example": 7.5
+          },
+          "trend": {
+            "type": "string",
+            "example": "Increasing"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "order"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "Water Purifier 2000"
+          },
+          "description": {
+            "type": "string",
+            "example": "Advanced water purifier with multi-stage filtration for homes."
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "example": 150.25
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int64",
+            "example": 20
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "order"
+        }
+      }
+    }
+  }
+}
