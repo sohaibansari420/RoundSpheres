@@ -2,59 +2,36 @@
   "openapi": "3.0.3",
   "info": {
     "title": "RoundSphere API",
-    "description": "RoundSphere offers an innovative water conservation product and a data service. The product, shade balls, minimizes water evaporation, prevents algae growth, and enhances water quality in reservoirs. The service provides access to real-time and historical IoT data on environmental metrics like temperature and evaporation rates. It supports researchers with predictive modeling and scientific analysis. RoundSphere combines sustainability-focused products with advanced data services to address water scarcity.\n\n\nSome useful links:\n- [Github repository](https://github.com/sohaibansari420/RoundSpheres)\n- [RoundSphere Postman workspace](https://swe7301-group-4.postman.co/workspace/SWE7301-Group-4-Workspace~a47bff38-a672-4338-885a-988100816f00/collection/36868182-ad73a91f-84ec-4de0-abbb-898bee7bca57?action=share&creator=36868182)",
-    "version": "1.0"
+    "description": "Complete API documentation for managing water conservation products, IoT data, user accounts, analytics, and more.",
+    "version": "1.2"
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:5000"
+      "url": "http://127.0.0.1:5000",
+      "description": "Local development server"
     }
   ],
   "tags": [
     {
-      "name": "Home",
-      "description": "RoundSphere Home"
-    },
-    {
       "name": "Authentication",
-      "description": "Register or Login"
+      "description": "Endpoints for user authentication and token generation"
     },
+    { "name": "User", "description": "Endpoints for managing user profiles" },
     {
       "name": "IoT Data",
-      "description": "Access IoT Data"
+      "description": "Endpoints for managing scientific/IoT data"
     },
+    { "name": "Product", "description": "Endpoints for product management" },
     {
-      "name": "Analytic",
-      "description": "Access Predictive aalytic data"
-    },
-    {
-      "name": "Product",
-      "description": "Access Predictive aalytic data"
-    },
-    {
-      "name": "User",
-      "description": "User Profiles"
+      "name": "Analytics",
+      "description": "Endpoints for analytics and predictions"
     }
   ],
   "paths": {
-    "/": {
-      "get": {
-        "tags": [
-          "Home"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/auth/register": {
       "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "description": "Registration Successful",
+        "tags": ["Authentication"],
+        "summary": "Register a new user",
         "requestBody": {
           "required": true,
           "content": {
@@ -65,84 +42,271 @@
             }
           }
         },
-        "parameters": [],
         "responses": {
-          "200": {
-            "description": "User Registered Successfully"
-          },
-          "401": {
-            "description": "Email is in use"
-          }
+          "200": { "description": "User registered successfully" },
+          "400": { "description": "Missing required fields" },
+          "500": { "description": "Error occurred during registration" }
         }
       }
     },
     "/auth/login": {
       "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "description": "Login Successful",
+        "tags": ["Authentication"],
+        "summary": "Authenticate a user and return a JWT token",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserLogin"
               }
             }
           }
         },
-        "parameters": [],
         "responses": {
-          "200": {
-            "description": "User Logged in Successfully"
-          },
-          "401": {
-            "description": "Invalid email or password"
+          "200": { "description": "Login successful" },
+          "401": { "description": "Invalid email or password" }
+        }
+      }
+    },
+    "/api/get-user-profile": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Retrieve all user profiles (Admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "List of user profiles" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/get-user-profile/{profileId}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Retrieve a specific user's profile (Admin only)",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
           }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "User profile retrieved successfully" },
+          "404": { "description": "User not found" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/update-user-profile/{profileId}": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update a user's profile (Admin only)",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "User profile updated successfully" },
+          "403": { "description": "Admin access required" },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/api/delete-user-profile/{profileId}": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete a user profile (Admin only)",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "User profile deleted successfully" },
+          "403": { "description": "Admin access required" },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/api/add-data": {
+      "post": {
+        "tags": ["IoT Data"],
+        "summary": "Upload a new scientific data record (Admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Apidata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Data uploaded successfully" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/add-data/bulk": {
+      "post": {
+        "tags": ["IoT Data"],
+        "summary": "Upload multiple scientific data records (Admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Apidata"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Bulk data uploaded successfully" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/update-data/{dataId}": {
+      "put": {
+        "tags": ["IoT Data"],
+        "summary": "Update all fields of a scientific data record (Admin only)",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Apidata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Scientific data updated successfully" },
+          "404": { "description": "Data not found" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/edit-data/{dataId}": {
+      "patch": {
+        "tags": ["IoT Data"],
+        "summary": "Update specific fields of a scientific data record (Admin only)",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Apidata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Scientific data updated successfully" },
+          "404": { "description": "Data not found" },
+          "403": { "description": "Admin access required" }
         }
       }
     },
     "/api/get-all-data": {
       "get": {
-        "tags": [
-          "IoT Data"
-        ],
-        "description": "Data Fetched Sucessfully",
-        "parameters": [],
+        "tags": ["IoT Data"],
+        "summary": "Retrieve all IoT Data",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "200": {
-            "description": "All API research data fetched Successfully"
-          },
-          "403": {
-            "description": "Unauthorized access. Please check your credentials."
+          "200": { "description": "List of IoT Data" },
+          "403": { "description": "Login access required" }
+        }
+      }
+    },
+    "/api/get-data/{dataId}": {
+      "get": {
+        "tags": ["IoT Data"],
+        "summary": "Retrieve a specific IoT Data",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
           }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "IoT Data retrieved successfully" },
+          "404": { "description": "IoT Data not found" },
+          "403": { "description": "Login access required" }
         }
       }
     },
     "/api/analytics/predictive": {
       "get": {
-        "tags": [
-          "Analytic"
-        ],
-        "description": "Analytic Data Fetched Sucessfully",
-        "parameters": [],
+        "tags": ["Analytics"],
+        "summary": "Retrieve all Analytic Data",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "200": {
-            "description": "Analytic Predictive Data Fetched Sucessfully'"
-          },
-          "403": {
-            "description": "Unauthorized access. Please check your credentials."
-          }
+          "200": { "description": "List of Analytic Data" },
+          "403": { "description": "Login access required" }
         }
       }
     },
     "/api/analytics": {
       "post": {
-        "tags": [
-          "Analytic"
-        ],
-        "description": "Analytic Data Added Sucessfully",
+        "tags": ["Analytics"],
+        "summary": "Upload a new Analytic data record (Admins & Institutions)",
         "requestBody": {
           "required": true,
           "content": {
@@ -153,170 +317,46 @@
             }
           }
         },
-        "parameters": [],
         "responses": {
-          "200": {
-            "description": "Analytic Predictive Data Created Sucessfully'"
-          },
-          "403": {
-            "description": "Unauthorized access. Please check your credentials."
-          }
-        }
-      }
-    },
-    "/api/add-data": {
-      "post": {
-        "tags": [
-          "IoT Data"
-        ],
-        "description": "Data uploaded successfully",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Apidata"
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "API Data uploaded successfully"
-          },
-          "400": {
-            "description": "Invalid data format."
-          }
-        }
-      }
-    },
-    "/api/update-data": {
-      "patch": {
-        "tags": [
-          "IoT Data"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Invalid data format."
-          }
-        }
-      }
-    },
-    "/api/update-data/{dataId}": {
-      "parameters": [
-        {
-          "name": "dataId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      ],
-      "put": {
-        "tags": [
-          "IoT Data"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Invalid data format."
-          }
-        }
-      }
-    },
-    "/api/add-data/bulk": {
-      "post": {
-        "tags": [
-          "IoT Data"
-        ],
-        "description": "Bulk data upload successful",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Apidata"
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Bulk data Uploaded Successfully"
-          },
-          "400": {
-            "description": "Invalid data format."
-          },
-          "500": {
-            "description": "Server encountered an issue processing the data."
-          }
+          "200": { "description": "Data uploaded successfully" },
+          "403": { "description": "Admin & Institution Access required" }
         }
       }
     },
     "/api/get-all-products": {
       "get": {
-        "tags": [
-          "Product"
-        ],
-        "description": "Fetched Successfully",
-        "parameters": [],
+        "tags": ["Product"],
+        "summary": "Retrieve all Products",
         "responses": {
-          "200": {
-            "description": "All Products fetched successfully"
-          },
-          "500": {
-            "description": "Server encountered an issue processing the data."
-          }
+          "200": { "description": "List of Products Data" },
+          "404": { "description": "Products not found" }
         }
       }
     },
     "/api/get-products/{productId}": {
-      "parameters": [
-        {
-          "name": "productId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      ],
       "get": {
-        "tags": [
-          "Product"
-        ],
-        "description": "Fetched Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Product fetched successfully"
-          },
-          "500": {
-            "description": "Server encountered an issue processing the data."
+        "tags": ["Product"],
+        "summary": "Retrieve a specific Product Data",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
           }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Product retrieved successfully" },
+          "404": { "description": "Product not found" }
         }
       }
     },
     "/api/add-product": {
       "post": {
-        "tags": [
-          "Product"
-        ],
-        "description": "Added Successfully",
+        "tags": ["Product"],
+        "summary": "Upload a new Product record (Admin only)",
         "requestBody": {
           "required": true,
           "content": {
@@ -327,148 +367,118 @@
             }
           }
         },
-        "parameters": [],
         "responses": {
-          "200": {
-            "description": "Product added successfully"
-          },
-          "400": {
-            "description": "Product name already exists"
-          }
+          "200": { "description": "Data uploaded successfully" },
+          "403": { "description": "Admin Access required" },
+          "500": { "description": "Failed to add product" }
         }
       }
     },
-    "/api/update-products/{productId}": {
-      "parameters": [
-        {
-          "name": "productId",
-          "in": "path",
+    "/api/add-products/bulk": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Upload multiple Products data records (Admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
           "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
           }
+        },
+        "responses": {
+          "200": { "description": "Bulk Product uploaded successfully" },
+          "403": { "description": "Admin access required" },
+          "500": { "description": "Failed to add product" }
         }
-      ],
+      }
+    },
+    "/api/update-product/{productId}": {
       "put": {
-        "tags": [
-          "Product"
-        ],
-        "description": "Updated Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Product Details Uploaded Successfully"
-          },
-          "500": {
-            "description": "Server encountered an issue processing the data."
+        "tags": ["Product"],
+        "summary": "Update all fields of a Product data record (Admin only)",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
           }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Product updated successfully" },
+          "404": { "description": "Product not found" },
+          "403": { "description": "Admin access required" }
         }
       }
     },
-    "/api/delete-products/<productId>": {
+    "/api/edit-product/{productId}": {
+      "patch": {
+        "tags": ["Product"],
+        "summary": "Update specific fields of a scientific data record (Admin only)",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Product updated successfully" },
+          "404": { "description": "Product not found" },
+          "403": { "description": "Admin access required" }
+        }
+      }
+    },
+    "/api/delete-product/{productId}": {
       "delete": {
-        "tags": [
-          "Product"
+        "tags": ["Product"],
+        "summary": "Delete a Product (Admin only)",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
         ],
-        "description": "Deleted Successfully",
-        "parameters": [],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "200": {
-            "description": "Product Deleted Successfully"
-          },
-          "400": {
-            "description": "Product does not exists or has been deleted"
-          }
-        }
-      }
-    },
-    "/api/get-user-profile": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Fetched Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "All Profile Fetched Successfully"
-          }
-        }
-      }
-    },
-    "/api/get-user-profile/{profileId}": {
-      "parameters": [
-        {
-          "name": "profileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      ],
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Fetched Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Profile Fetched Successfully"
-          }
-        }
-      }
-    },
-    "/api/update-user-profile/{profileId}": {
-      "parameters": [
-        {
-          "name": "profileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      ],
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "description": "Updated Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Profile Updated Successfully"
-          }
-        }
-      }
-    },
-    "/api/delete-user-profile/{profileId}": {
-      "parameters": [
-        {
-          "name": "profileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      ],
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "Deleted Successfully",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Profile Deleted Successfully"
-          }
+          "200": { "description": "Product deleted successfully" },
+          "403": { "description": "Admin access required" },
+          "404": { "description": "Product not found" }
         }
       }
     }
@@ -478,107 +488,54 @@
       "User": {
         "type": "object",
         "properties": {
-          "profileId": {
-            "type": "integer",
-            "format": "int64",
-            "example": 10
-          },
-          "firstname": {
-            "type": "string",
-            "example": "Naruto"
-          },
-          "lastname": {
-            "type": "string",
-            "example": "Uzumaki"
-          },
-          "email": {
-            "type": "string",
-            "example": "naruto@hokage.ac.uk"
-          },
-          "role": {
-            "type": "string",
-            "example": "admin"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "xml": {
-          "name": "order"
+          "profileId": { "type": "integer", "example": 1 },
+          "firstname": { "type": "string", "example": "John" },
+          "lastname": { "type": "string", "example": "Doe" },
+          "email": { "type": "string", "example": "john.doe@example.com" },
+          "password": { "type": "string", "example": "securepassword" },
+          "role": { "type": "string", "example": "admin" }
+        }
+      },
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "senju@example.com" },
+          "password": { "type": "string", "example": "securepassword123" }
+        }
+      },
+      "UserUpdate": {
+        "type": "object",
+        "properties": {
+          "firstname": { "type": "string", "example": "John" },
+          "lastname": { "type": "string", "example": "Smith" },
+          "email": { "type": "string", "example": "john.smith@example.com" },
+          "role": { "type": "string", "example": "user" }
         }
       },
       "Apidata": {
         "type": "object",
         "properties": {
-          "dataId": {
-            "type": "integer",
-            "format": "int64",
-            "example": 15
-          },
-          "temperatureWater": {
-            "type": "number",
-            "format": "float",
-            "example": 16
-          },
-          "temperatureAir": {
-            "type": "number",
-            "format": "float",
-            "example": 18.5
-          },
-          "humidity": {
-            "type": "number",
-            "format": "float",
-            "example": 54.3
-          },
-          "windSpeed": {
-            "type": "number",
-            "format": "float",
-            "example": 31.6
-          },
-          "precipitation": {
-            "type": "number",
-            "format": "float",
-            "example": 13
-          },
-          "notes": {
-            "type": "string",
-            "example": "Cold and windy with no precipitation."
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "xml": {
-          "name": "order"
+          "dataId": { "type": "integer", "example": 1 },
+          "temperatureWater": { "type": "number", "example": 22.5 },
+          "temperatureAir": { "type": "number", "example": 30.0 },
+          "humidity": { "type": "number", "example": 75 },
+          "windSpeed": { "type": "number", "example": 12.5 },
+          "precipitation": { "type": "number", "example": 0.0 },
+          "notes": { "type": "string", "example": "Sample notes" }
         }
       },
       "Analytic": {
         "type": "object",
         "properties": {
-          "analyticId": {
-            "type": "integer",
-            "format": "int64",
-            "example": 32
-          },
-          "region": {
-            "type": "string",
-            "example": "Northeast"
-          },
+          "analyticId": { "type": "integer", "format": "int64", "example": 32 },
+          "region": { "type": "string", "example": "Northeast" },
           "evaporationRate": {
             "type": "number",
             "format": "float",
             "example": 7.5
           },
-          "trend": {
-            "type": "string",
-            "example": "Increasing"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "trend": { "type": "string", "example": "Increasing" },
+          "created_at": { "type": "string", "format": "date-time" }
         },
         "xml": {
           "name": "order"
@@ -587,37 +544,26 @@
       "Product": {
         "type": "object",
         "properties": {
-          "productId": {
-            "type": "integer",
-            "format": "int64",
-            "example": 10
-          },
-          "name": {
-            "type": "string",
-            "example": "Water Purifier 2000"
-          },
+          "productId": { "type": "integer", "format": "int64", "example": 10 },
+          "name": { "type": "string", "example": "Water Purifier 2000" },
           "description": {
             "type": "string",
             "example": "Advanced water purifier with multi-stage filtration for homes."
           },
-          "price": {
-            "type": "number",
-            "format": "float",
-            "example": 150.25
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int64",
-            "example": 20
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "price": { "type": "number", "format": "float", "example": 150.25 },
+          "stock": { "type": "integer", "format": "int64", "example": 20 },
+          "created_at": { "type": "string", "format": "date-time" }
         },
         "xml": {
           "name": "order"
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
