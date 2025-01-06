@@ -97,38 +97,10 @@ def sendemails(request):
 def shopview(request):
     return render(request, 'users/shop.html') 
 
-# def signup(request):
-#     if request.method == 'POST':
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_active = False  # Inactive until email verification
-#             user.save()
 
-#             # Send verification email
-#             current_site = get_current_site(request)
-#             subject = 'Activate Your Account'
-#             message = render_to_string('email_verification.html', {
-#                 'user': user,
-#                 'domain': current_site.domain,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': email_verification_token.make_token(user),
-#             })
-#             send_mail(
-#                 subject,
-#                 message,
-#                 'your-email@gmail.com',
-#                 [user.email],
-#                 fail_silently=False,
-#             )
-#             return render(request, 'email_sent.html', {'email': user.email})
-#     else:
-#         form = RegistrationForm()
-#     return render(request, 'registration/signup.html', {'form': form})
 def signup(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        print("CHECK WE DEY HERE")
         
         if form.is_valid():
             # Save the user but set `is_active` to False
@@ -156,26 +128,13 @@ def signup(request):
             email.send(fail_silently=False)
 
             # Redirect to an email-sent confirmation page
-            return render(request, 'registration/email_sent.html', {'email': request.user.email})
+            return render(request, 'registration/email_sent.html', {'user': user})
         else:
             print(form.errors)  # Debug: Print form errors in the terminal
     else:
         form = RegistrationForm()
     return render(request, 'registration/signup.html', {'form': form})
-# def activate(request, uidb64, token):
-#     try:
-#         uid = force_str(urlsafe_base64_decode(uidb64))
-#         user = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         user = None
 
-#     if user is not None and email_verification_token.check_token(user, token):
-#         user.is_active = True
-#         user.save()
-#         login(request, user)
-#         return render(request, 'activation_success.html')
-#     else:
-#         return HttpResponse('Activation link is invalid!')
 def activate_account(request, uidb64, token):
     """Activate the user's account if the token is valid."""
     try:
