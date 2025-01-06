@@ -4,7 +4,7 @@ const openbar = () => {
 // document.querySelector('.sc').classList.add('scrl');
 document.querySelector('.scrl').classList.toggle('sc');
 }
-const home = () => {
+const home = () => { 
 document.querySelector('.scrl').classList.remove('sc');
 document.querySelector('#bar').classList.remove('fa-xmark');
 }
