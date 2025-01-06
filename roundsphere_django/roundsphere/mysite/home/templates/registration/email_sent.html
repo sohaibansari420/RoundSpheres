@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Email Sent{% endblock title %}
+{% block body %}
+<div class="auth-container" style="width: 100%; max-width: 400px; padding: 20px; margin: 120px auto 400px auto; background: #fff; box-shadow: 0 -1px 101px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+  <div class="auth-box">
+    <h1 style="font-size: 1.8rem; margin-bottom: 1rem; color: #007bff; text-align: center;">
+      Hi {{ user.username }},
+    </h1>
+    <p>A verification email has been sent to your email address: <strong>{{ user.email }}</strong>.</p>
+    <p>Please check your inbox to verify your account.</p>
+  </div>
+</div>
+{% endblock body %}
