@@ -12,6 +12,7 @@ urlpatterns = [
     path("blog", views.blog, name='blog'),
     # path("login/", views.login, name='login/'),
     path("auth/signup/", views.signup, name='signup'),
+    path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
     path("auth/", include("django.contrib.auth.urls")),
     path("data", views.data, name='data'),
     # path("logout", views.logout, name='logout'),

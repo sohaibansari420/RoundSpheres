@@ -80,10 +80,16 @@ input:focus {
   background: #0056b3;
 }
 
-input[type="number"] {
+/* input[type="number"] {
   -moz-appearance: textfield;
+} */
+.form-control[type="number"] {
+  -moz-appearance: textfield; /* Removes spinner for Firefox */
 }
-
+.form-control[type="number"]::-webkit-inner-spin-button,
+.form-control[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Removes spinner for Chrome, Safari, Edge */
+}
 /* Text Link */
 p {
   text-align: center;

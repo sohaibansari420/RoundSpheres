@@ -1,12 +1,13 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
 
 import uuid # Required for unique IDs
 
 """ Create your models here."""
 """--------------------------------------------------------------------------------------------------------------"""
 """ User Model """
-class User(models.Model):
+class User(AbstractUser):
     ROLES = [
         ('customer', 'Customer'),
         ('admin', 'Admin'),
@@ -16,20 +17,15 @@ class User(models.Model):
     """Definition of the User Model in Django"""
     userId = models.AutoField(primary_key=True)
     # models.UUIDField(primary_key=True, default=uuid.uuid4)  # Auto-incrementing primary key
-
-    firstname = models.CharField(max_length=80, null=False)  # First name, max length 80
-    lastname = models.CharField(max_length=80, null=False)   # Last name, max length 80
-    email = models.EmailField(unique=True)  # Unique email address
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    postcode = models.CharField(max_length=10, blank=True, null=True)  # New field for postcode
-    role = models.CharField(max_length=20, choices=ROLES, default='researcher') # Role field
-    username = models.CharField(max_length=150, unique=True)  # Unique username
-    password = models.CharField(max_length=128)  # Hashed password
-    created_at = models.DateTimeField(auto_now_add=True)     # Automatically set on creation
-
+    postcode = models.CharField(max_length=10, blank=True, null=True)
+    role = models.CharField(max_length=20, choices=ROLES, default='researcher')
+    email_verified = models.BooleanField(default=False)  # New field to track email verification
+    firstname = models.CharField(max_length=80, null=False)  # Optional, since AbstractUser has first_name
+    lastname = models.CharField(max_length=80, null=False)   # Optional, since AbstractUser has last_name
     def __str__(self):
-        return f"User {self.userId}: {self.firstname} {self.lastname}"
+        return f"User {self.userId}: {self.firstname} {self.lastname} - {self.role}"
     
     def get_absolute_url(self):
         """Returns the URL to access a detail record for this user."""

@@ -3,7 +3,8 @@ from .models import Product
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from .models import User
+# from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -14,6 +15,8 @@ from .utils import email_verification_token
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
 
 
 # Create your views here.
@@ -69,16 +72,16 @@ def login(request):
 def shop(request):
     return render(request, 'users/shop.html') 
 
-def signup(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect(reverse("index"))
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {"form": form}) 
+# def signup(request):
+#     if request.method == "POST":
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect(reverse("index"))
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'registration/signup.html', {"form": form}) 
 
 
 
@@ -121,8 +124,44 @@ def shopview(request):
 #             return render(request, 'email_sent.html', {'email': user.email})
 #     else:
 #         form = RegistrationForm()
-#     return render(request, 'register.html', {'form': form})
+#     return render(request, 'registration/signup.html', {'form': form})
+def signup(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        print("CHECK WE DEY HERE")
+        
+        if form.is_valid():
+            # Save the user but set `is_active` to False
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            # Generate the email verification link
+            current_site = get_current_site(request)
+            subject = 'Activate Your Account'
+            message = render_to_string('registration/email_verification.html', {
+                'user': user.username,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
 
+            """Send email"""
+            email = EmailMessage(
+                subject,
+                message,
+                'primefordfx@gmail.com',  # Replace with your email address
+                [user.email],
+            )
+            email.content_subtype = "html"  # Set content type to HTML
+            email.send(fail_silently=False)
+
+            # Redirect to an email-sent confirmation page
+            return render(request, 'registration/email_sent.html', {'email': request.user.email})
+        else:
+            print(form.errors)  # Debug: Print form errors in the terminal
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 # def activate(request, uidb64, token):
 #     try:
 #         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -137,3 +176,17 @@ def shopview(request):
 #         return render(request, 'activation_success.html')
 #     else:
 #         return HttpResponse('Activation link is invalid!')
+def activate_account(request, uidb64, token):
+    """Activate the user's account if the token is valid."""
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return render(request, 'registration/account_activated.html', {'user': user})
+    else:
+        return HttpResponse('Activation link is invalid!', status=400)
