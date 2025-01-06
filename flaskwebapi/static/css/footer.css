@@ -1,78 +1,29 @@
+footer {
+  background-color: #343a40;
+  color: #f8f9fa;
+  font-size: 0.9rem;
+}
 
- /* Footer  */
+footer h5 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
 
- #miss{
-    background-color:#30333a ;
-    display: flex;
-    height: 450px;
-    margin-top: 0px;
-    width: 100%;
-    color: white;
-    
-      }
-    #miss1{
-    padding-right: 50px;
-    margin-left: 180px;
-    padding-top: 140px;
-    font-size: 20px;
-    }
-    
-    #miss2{
-    padding-right: 100px;
-    padding-top: 120px;
-    font-size: 20px;
-    }
-    #miss3{
-    padding-right: 100px;
-    padding-top: 120px;
-    font-size: 20px;
-    }
-    #miss4{
-      padding-right: 100px;
-      padding-top: 120px;
-      font-size: 20px;
-    }
-    #miss5{
-      padding-right: 110px;
-      padding-top: 128px;
-      font-size: 20px;
-    
-    
-    }
-    #buten{
-      background-color: rgb(252, 93, 98);
-          height: 50px;
-          width: 225px;
-         font-size: large;
-          border: none;
-          margin-top: 20px;
-          border-radius: 30px;
-          margin-right: 100px; 
-          font-weight: bold;
-          color: white;
-    }
-    #email{
-      height: 50px;
-      width: 220px;
-      border-radius: 30px;
-      border: none;
-    }
-    #res{
-      font-size: 30px;
-    }
-    
-    #sir{
-      font-size: 30px;
-    
-    }
-    
-    #cap{
-      font-size: 30px;
-    
-    }
+footer a:hover {
+  color: #28a745;
+}
 
-    .copyright{
-        font-size: 30px;
-    color: white;
+footer .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
 
-    }
+footer .btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+footer hr {
+  margin: 2rem 0;
+}

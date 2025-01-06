@@ -2,4 +2,55 @@
 
 {% block title %}Blog {% endblock title %}
 
-{% block body %} This is my blog body {% endblock body %}
+
+{% block body %}
+
+<link rel="stylesheet" href="../static/css/blog.css">
+<header class="header">
+    <div class="container">
+        <h1>Our Blog</h1>
+        <p>Insights, updates, and stories from our team</p>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <section class="blog-grid">
+            <article class="blog-card">
+                <img src="https://via.placeholder.com/300" alt="Blog Image" class="blog-image">
+                <div class="blog-content">
+                    <h2 class="blog-title">Blog Post Title 1</h2>
+                    <p class="blog-meta">By Jane Doe | Jan 1, 2024</p>
+                    <p class="blog-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.</p>
+                    <a href="#" class="blog-link">Read More</a>
+                </div>
+            </article>
+            <article class="blog-card">
+                <img src="https://via.placeholder.com/300" alt="Blog Image" class="blog-image">
+                <div class="blog-content">
+                    <h2 class="blog-title">Blog Post Title 2</h2>
+                    <p class="blog-meta">By John Doe | Jan 5, 2024</p>
+                    <p class="blog-excerpt">Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+                    <a href="#" class="blog-link">Read More</a>
+                </div>
+            </article>
+            <article class="blog-card">
+                <img src="https://via.placeholder.com/300" alt="Blog Image" class="blog-image">
+                <div class="blog-content">
+                    <h2 class="blog-title">Blog Post Title 3</h2>
+                    <p class="blog-meta">By Alice Smith | Jan 10, 2024</p>
+                    <p class="blog-excerpt">Donec sed odio dui. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+                    <a href="#" class="blog-link">Read More</a>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 Blog Page. All Rights Reserved.</p>
+    </div>
+</footer> 
+
+{% endblock body %}
