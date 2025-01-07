@@ -53,6 +53,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mysite.urls'
 
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "home" / "static",
+]
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -119,7 +126,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -128,8 +134,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Or your email provider
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your password
+EMAIL_HOST_USER = 'primefordfx@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'evschifsvtkkskic'  # Replace with your password
+AUTH_USER_MODEL = 'home.User'
+# EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
+# EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your password

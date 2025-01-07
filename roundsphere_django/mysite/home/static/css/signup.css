@@ -1,21 +1,29 @@
 /* Auth Container */
+
 .auth-container {
   width: 100%;
-  max-width: 400px;
   padding: 20px;
+  background: #fff;
   align-items: center;
-  width: 100%;
-  margin-top: 120px;
+  margin-top: 150px;
   max-width: 398px;
   margin-bottom: 400px;
-  /* margin-left: 40%; */
-  background: #fff;
+  /* background: url(/images/background.png); */
+  /* background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  margin-left: auto;
+  margin-right: auto;
   box-shadow: 0 -1px 101px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
+
+/* .auth-box {
+  width: 60rem;
+} */
 
 .auth-box h1 {
   font-size: 1.8rem;
@@ -72,6 +80,16 @@ input:focus {
   background: #0056b3;
 }
 
+/* input[type="number"] {
+  -moz-appearance: textfield;
+} */
+.form-control[type="number"] {
+  -moz-appearance: textfield; /* Removes spinner for Firefox */
+}
+.form-control[type="number"]::-webkit-inner-spin-button,
+.form-control[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Removes spinner for Chrome, Safari, Edge */
+}
 /* Text Link */
 p {
   text-align: center;

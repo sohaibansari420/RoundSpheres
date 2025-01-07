@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .email-header {
+        background-color: #007bff;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+      }
+      .email-body {
+        padding: 20px;
+        text-align: center;
+      }
+      .email-body h1 {
+        color: #333333;
+        font-size: 24px;
+      }
+      .email-body p {
+        color: #666666;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .email-body a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .email-footer {
+        background-color: #f1f1f1;
+        color: #888888;
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+      }
+      .email-footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <!-- Header Section -->
+      <div class="email-header">
+        <h1>Welcome to RoundSpheres!</h1>
+      </div>
+
+      <!-- Body Section -->
+      <div class="email-body">
+        <h1>Hi  <span style=" color: #007bff;">{{ user }}</span>,</h1>
+        <p>
+          We're excited to have you on board. To get started, please verify your
+          email address by clicking the button below:
+        </p>
+        <a href="http://{{ domain }}/activate/{{ uid }}/{{ token }}"
+          >Verify Your Email</a
+        >
+        <p>
+          If you did not sign up for an account, you can safely ignore this
+          email.
+        </p>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="email-footer">
+        <p>
+          Need help? <a href="mailto:support@roundspheres.com">Contact us</a>
+        </p>
+        <p>&copy; 2024 RoundSpheres. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
