@@ -74,22 +74,27 @@ body {
 }
 
 /* Solutions Section */
+
+/*
 .solutions {
   padding: 2rem 1rem;
   background-color: #e7fbe7; /* Soft green background */
   text-align: center;
-}
-
+  
+ 
+/*
 .solutions h1 {
   font-size: 2.5rem;
   color: #04a3ff; /* Deep green for headers */
   margin-bottom: 1rem;
-}
 
+/*
 .solutions ul {
   margin: 1.5rem 0;
   padding: 0;
   list-style: none;
+  display: flex;
+  gap: 2rem;
 }
 
 .solutions ul li {
@@ -100,6 +105,8 @@ body {
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 2rem;
 }
 
 /* Button */
@@ -117,8 +124,24 @@ body {
 }
 
 .solutions .btn:hover {
-  background-color: #060202; /* Hover effect */
+  background-color: #0086fb; /* Hover effect */
   transform: scale(1.05);
+}
+
+.solution-box {
+  background-color: #ffffff; /* White background for the boxes */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.solution-box:hover {
+  transform: translateY(-10px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Shadow on hover */
+}
+
+@media (max-width: 768px) {
+  .solution-box {
+    margin-bottom: 20px; /* Space between boxes for smaller screens */
+  }
 }
 
 /* General Styles */
