@@ -15,28 +15,33 @@
 </div>
 
 
-
 <!-- Features Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light ">
   <div class="container">
-    <h2 class="text-center mb-4">Why Choose Us?</h2>
+    <h1 class="text-center mb-4">Why Choose Us?</h1>
     <div class="row text-center">
+      <!-- Eco-Friendly Products -->
       <div class="col-12 col-md-4 mb-4">
         <div class="p-3 border rounded">
+          <img src="..\static\images\eco-friendly-icon.webp"  class="mb-3" width="150">
           <h5>Eco-Friendly Products</h5>
-          <p>Our solutions are designed with sustainability in mind.</p>
+          <p>Certified and sustainable, our solutions reduce waste and emissions.</p>
         </div>
       </div>
+      <!-- Innovative Technology -->
       <div class="col-12 col-md-4 mb-4">
         <div class="p-3 border rounded">
+          <img src="..\static\images\technology-icon.jpg"  class="mb-4" width="250">
           <h5>Innovative Technology</h5>
-          <p>We leverage cutting-edge technology to conserve water.</p>
+          <p>AI-driven systems designed to optimize water usage efficiently.</p>
         </div>
       </div>
+      <!-- Proven Results -->
       <div class="col-12 col-md-4 mb-4">
         <div class="p-3 border rounded">
+          <img src="..\static\images\result.jpeg" class="mb-4" width="265">
           <h5>Proven Results</h5>
-          <p>Our systems save thousands of liters of water every day.</p>
+          <p>Join over 10,000 happy customers saving millions of liters daily.</p>
         </div>
       </div>
     </div>
@@ -67,7 +72,7 @@
   </div>
 </div>
 
-<!-- Solutions Section -->
+<!-- Solutions Section
 <section class="py-5 bg-light">
   <div class="container text-center">
     <h2 class="mb-4">Our Solutions</h2>
@@ -95,6 +100,93 @@
       <a href="/contact/" class="btn btn-secondary">Get in Touch</a>
     </div>
   </div>
+</section> -->
+
+<section class="values-section">
+  <div class="container">
+      <h2>Our Core Values</h2>
+      <div class="values">
+          <div class="value-item">
+              <img src="..\static\images\planet-earth.png" alt="Sustainability">
+              <h3>Sustainability</h3>
+              <p>We are committed to reducing environmental impact through innovative solutions.</p>
+          </div>
+          <div class="value-item">
+              <img src="..\static\images\innovation.png" alt="Innovation">
+              <h3>Innovation</h3>
+              <p>We leverage technology to develop smarter ways of conserving water resources.</p>
+          </div>
+          <div class="value-item">
+              <img src="..\static\images\diversity.png" alt="Community">
+              <h3>Community</h3>
+              <p>We empower communities by providing them with sustainable water conservation tools.</p>
+          </div>
+      </div>
+  </div>
 </section>
+
+<style>
+
+
+  
+/* Values Section */
+.values-section {
+  padding: 3rem 1rem;
+  background: #e7fbe7; /* Soft green */
+  text-align: center;
+}
+
+.values-section h2 {
+  color: #007B55;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.values {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.value-item {
+  text-align: center;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.value-item img {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.value-item h3 {
+  font-size: 1.5rem;
+  color: #007B55;
+  margin-bottom: 1rem;
+}
+
+.value-item p {
+  font-size: 1rem;
+  color: #333;
+}
+
+
+
+
+
+</style>
+
+
 
 {% endblock body %}

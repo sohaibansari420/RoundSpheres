@@ -232,3 +232,62 @@ header p {
 .buy-btn:hover {
   background-color: #005a3e;
 }
+
+
+/* Values Section */
+.values-section {
+  padding: 3rem 1rem;
+  background: #e7fbe7; /* Soft green */
+  text-align: center;
+}
+
+.values-section h2 {
+  color: #007B55;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.values {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.value-item {
+  text-align: center;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.value-item img {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.value-item h3 {
+  font-size: 1.5rem;
+  color: #007B55;
+  margin-bottom: 1rem;
+}
+
+.value-item p {
+  font-size: 1rem;
+  color: #333;
+}
+
+
+
+
+
+
