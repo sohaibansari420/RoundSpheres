@@ -47,6 +47,7 @@ class Product(models.Model):
     price = models.FloatField(null=True)  # Product price as a floating-point value
     stock = models.IntegerField(null=True)  # Stock quantity as an integer
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the product is created
+    image = models.ImageField(upload_to='product_images/', null=True, blank=True)  # New image field
 
     def __str__(self):
         return f"Product {self.productId}: {self.name}"
@@ -54,6 +55,11 @@ class Product(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a detail record for this product."""
         return reverse('product-detail', args=[str(self.productId)])
+    
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return 'https://via.placeholder.com/300'
     
     class Meta:
         db_table = 'Product_data'  # Explicitly sets the table name
