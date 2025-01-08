@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path,include
 from home import views
 from . import views
-# from django.contrib.auth import views as auth_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
  
@@ -14,8 +14,8 @@ urlpatterns = [
     path("auth/signup/", views.signup, name='signup'),
     path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
     path("auth/", include("django.contrib.auth.urls")),
-    # path('auth/password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
-    # path('password_change_done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('auth/password_change/', auth_views.PasswordChangeView.as_view(), name='password-change'),
+    path('password_change_done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
     path('update-profile/', views.update_profile, name='update-profile'),
     path("data/", views.data, name='data'),
     # path("logout", views.logout, name='logout'),
