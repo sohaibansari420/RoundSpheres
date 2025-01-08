@@ -6,15 +6,15 @@ from . import views
 urlpatterns = [
  
     path("", views.index, name='home'),
-    path("about", views.about, name='about'),
+    path("about/", views.about, name='about'),
     path("contact/", views.contact, name='contact'),
     path("shop/", views.shop, name='shop'),
-    path("blog", views.blog, name='blog'),
-    # path("login/", views.login, name='login/'),
+    path("blog/", views.blog, name='blog'),
     path("auth/signup/", views.signup, name='signup'),
     path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
     path("auth/", include("django.contrib.auth.urls")),
-    path("data", views.data, name='data'),
+    path('update-profile/', views.update_profile, name='update-profile'),
+    path("data/", views.data, name='data'),
     # path("logout", views.logout, name='logout'),
     
     # # Detail views for Apidata
