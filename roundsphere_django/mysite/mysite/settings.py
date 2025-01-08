@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Add our new application
     'home.apps.HomeConfig', # This object was created for us in /catalog/apps.py
+    # Third-party apps
+    'widget_tweaks',  # Add this line for django-widget-tweaks
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "home" / "static",
 ]
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 TEMPLATES = [
     {
@@ -143,3 +147,4 @@ EMAIL_HOST_PASSWORD = 'evschifsvtkkskic'  # Replace with your password
 AUTH_USER_MODEL = 'home.User'
 # EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
 # EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your password
+LOGIN_URL = 'login'

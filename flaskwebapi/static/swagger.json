@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "RoundSphere API",
-    "description": "Complete API documentation for managing water conservation products, IoT data, user accounts, analytics, and more.",
+    "description": "RoundSphere offers an innovative water conservation product and a data service. The product, shade balls, minimizes water evaporation, prevents algae growth, and enhances water quality in reservoirs. The service provides access to real-time and historical IoT data on environmental metrics like temperature and evaporation rates. It supports researchers with predictive modeling and scientific analysis. RoundSphere combines sustainability-focused products with advanced data services to address water scarcity.\n\n\nSome useful links:\n- [Github repository](https://github.com/sohaibansari420/RoundSpheres)\n- [RoundSphere Postman workspace](https://swe7301-group-4.postman.co/workspace/SWE7301-Group-4-Workspace~a47bff38-a672-4338-885a-988100816f00/collection/36868182-ad73a91f-84ec-4de0-abbb-898bee7bca57?action=share&creator=36868182)",
     "version": "1.2"
   },
   "servers": [
@@ -307,6 +307,7 @@
       "post": {
         "tags": ["Analytics"],
         "summary": "Upload a new Analytic data record (Admins & Institutions)",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -346,7 +347,6 @@
             "example": 1
           }
         ],
-        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": { "description": "Product retrieved successfully" },
           "404": { "description": "Product not found" }
@@ -357,6 +357,7 @@
       "post": {
         "tags": ["Product"],
         "summary": "Upload a new Product record (Admin only)",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {

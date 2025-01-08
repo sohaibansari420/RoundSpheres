@@ -1,23 +1,5 @@
 from django import forms
 from .models import User
-# from django.contrib.auth.models import User
-
-# class RegistrationForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput)
-#     confirm_password = forms.CharField(widget=forms.PasswordInput)
-
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password']
-
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         password = cleaned_data.get('password')
-#         confirm_password = cleaned_data.get('confirm_password')
-
-#         if password != confirm_password:
-#             raise forms.ValidationError("Passwords do not match.")
-#         return cleaned_data
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(
@@ -61,3 +43,27 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'firstname', 'lastname', 'email', 'phone_number', 
+            'address', 'postcode', 'username'
+        ]
+        widgets = {
+            'firstname': forms.TextInput(attrs={'class': 'form-control'}),
+            'lastname': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'postcode': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_email(self):
+        """Ensure email uniqueness, excluding the current user's email."""
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("A user with this email already exists.")
+        return email
