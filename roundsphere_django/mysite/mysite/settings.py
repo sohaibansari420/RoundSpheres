@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Add our new application
     'home.apps.HomeConfig', # This object was created for us in /catalog/apps.py
+    # Third-party apps
+    'widget_tweaks',  # Add this line for django-widget-tweaks
 ]
 
 MIDDLEWARE = [

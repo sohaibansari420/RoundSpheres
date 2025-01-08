@@ -25,29 +25,9 @@ from django.core.mail import EmailMessage
 def index(request):
     # if request.user.is_anonymous:
     #     return redirect("/login")
-    return render(request, 'users/index.html') 
-    
+    products = Product.objects.all()[:4]
+    return render(request, 'users/index.html', {'products': products}) 
     # return HttpResponse("this is homepage")
-
-def about(request):
-    return render(request, 'users/about.html') 
-
-    # return HttpResponse("this is about page")
-
-def contact(request):
-    return render(request, 'users/contact.html') 
-
-    # return HttpResponse("this is Contact page")
-
-def blog(request):
-    return render(request, 'users/blog.html') 
-
-    
-    # return HttpResponse("this is shop page")
-    
-    
-def data(request):
-    return render(request, 'users/data.html') 
 
 
 def shop(request):
@@ -58,7 +38,25 @@ def shop(request):
 def products_view(request):
     # Fetch all products from the database
     products = Product.objects.all()
-    return render(request, 'user/products.html', {'products': products})
+    return render(request, 'user/products.html', {'products': products}) 
+
+def about(request):
+    return render(request, 'users/about.html') 
+    # return HttpResponse("this is about page")
+
+def contact(request):
+    return render(request, 'users/contact.html') 
+    # return HttpResponse("this is Contact page")
+
+def blog(request):
+    return render(request, 'users/blog.html') 
+    # return HttpResponse("this is shop page")
+    
+    
+def data(request):
+    return render(request, 'users/data.html') 
+
+
 
 def sendemails(request):
        return render(request, 'registration/signup.html') 

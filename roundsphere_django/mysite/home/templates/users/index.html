@@ -10,7 +10,7 @@
         <p class="fs-4 text-success">Hello, {{ user.username|default:"Guest" }}!</p>
         <h1 class="display-4 text-white">Welcome to RoundSpheres</h1>
         <p class="lead text-white">Innovative solutions for water conservation and sustainability</p>
-        <a href="shop.html" class="btn btn-success">Explore Our Solutions</a>
+        <a href="/shop" class="btn btn-success">Explore Our Solutions</a>
       </div>
     </section>
   </div>
@@ -56,25 +56,38 @@
     <p>Explore our eco-friendly water conservation solutions.</p>
   </header>
 
-  <main class="products-container py-4">
+<main class="py-5">
     <div class="container">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for product in products %}
-        <div class="col">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-            <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text">{{ product.description }}</p>
-              <p class="price fw-bold text-success">${{ product.price }}</p>
-              <a href="#" class="btn btn-primary w-100">Buy Now</a>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
+        <section class="row g-4">
+            {% for product in products %}
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Product Image -->
+                        <img src="{{ product.image.url|default:'https://via.placeholder.com/300' }}" 
+                             alt="{{ product.name }}" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body text-center">
+                            <!-- Product Title -->
+                            <h5 class="card-title text-success">{{ product.name }}</h5>
+                            <!-- Product Price -->
+                            <p class="card-text fw-bold">${{ product.price }}</p>
+                            
+                            <!-- Product Actions -->
+                            <div class="d-flex flex-column gap-2">
+                                <a href="#" class="btn btn-outline-success">View Product</a>
+                                <a href="#" class="btn btn-success">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center">No products available at the moment. Please check back later.</p>
+            {% endfor %}
+        </section>
+        <!-- "See more" button links to the shop page -->
+        <a href="/shop/" class="btn btn-primary w-100 mt-4">See more...</a>
     </div>
-  </main>
+</main>
 
 <!-- Solutions Section -->
 

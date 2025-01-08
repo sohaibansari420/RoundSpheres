@@ -56,6 +56,11 @@ class Product(models.Model):
         """Returns the URL to access a detail record for this product."""
         return reverse('product-detail', args=[str(self.productId)])
     
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return 'https://via.placeholder.com/300'
+    
     class Meta:
         db_table = 'Product_data'  # Explicitly sets the table name
         ordering = ['name']  # Orders alphabetically by product name
