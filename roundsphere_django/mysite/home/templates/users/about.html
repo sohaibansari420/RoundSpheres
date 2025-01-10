@@ -2,111 +2,100 @@
 
 {% block title %}About {% endblock title %}
 
-{% block body %} 
+{% block body %}
 <link rel="stylesheet" href="../static/css/about.css">
-
+<link rel="icon" type="image/x-icon" href="..\static\images\drop.png">
 <section class="about">
-
-<div class="container">
-        <h1>About RoundSpheres</h1>
-        <p>We are dedicated to creating sustainable water conservation solutions that positively impact the environment and communities worldwide.</p>
+    <!-- Hero Section -->
+    <div class="hero-section text-white text-center d-flex flex-column justify-content-center align-items-center" style="background: url('../static/images/dam.jpg') no-repeat center center/cover; height: 60vh;">
+        <div class="hero-overlay"></div>
+        <h1 class="hero-title">About RoundSpheres</h1>
+        <p class="hero-subtitle">We are dedicated to creating sustainable water conservation solutions that positively impact the environment and communities worldwide.</p>
     </div>
 
-    <main>
-        <!-- <section class="hero">
-            <div class="container">
-                <h1>About Us</h1>
-                <p>Discover our journey and mission to conserve water and protect the environment.</p>
-            </div>
-        </section> -->
-
-        <section class="hero">
-            <div class="container">
-                <h1>About RoundSpheres</h1>
-                <p>Dedicated to conserving water and supporting communities through innovative solutions.</p>
-            </div>
-        </section>
-    
-        <section class="about-section">
-            <div class="container">
-                <div class="about-content">
-                    <div class="about-text">
-                        <h2>Our Mission</h2>
-                        <p>
-                            At RoundSpheres, our mission is to promote sustainability and environmental responsibility
-                            by developing cutting-edge water conservation technologies. From shade balls that reduce
-                            evaporation to advanced monitoring systems, we strive to make a global impact.
-                        </p>
-                        <h2>What We Do</h2>
-                        <p>
-                            We specialize in innovative products designed to protect water reservoirs and reduce
-                            wastage. Our team of experts works tirelessly to create sustainable solutions tailored
-                            to the needs of diverse industries and communities.
-                        </p>
-                    </div>
-                    <div class="about-image">
-                        <img src="about-image.jpg" alt="About Us Image">
-                    </div>
+    <!-- About Section -->
+    <section class="about-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2>Our Mission</h2>
+                    <p>
+                        At RoundSpheres, our mission is to promote sustainability and environmental responsibility by developing cutting-edge water conservation technologies. From shade balls that reduce evaporation to advanced monitoring systems, we strive to make a global impact.
+                    </p>
+                    <h2>What We Do</h2>
+                    <p>
+                        We specialize in innovative products designed to protect water reservoirs and reduce wastage. Our team of experts works tirelessly to create sustainable solutions tailored to the needs of diverse industries and communities.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="../static/images/about-image.jpg" alt="About Us" class="img-fluid rounded shadow">
                 </div>
             </div>
-        </section>
-    
-        <section class="values-section">
-            <div class="container">
-                <h2>Our Core Values</h2>
-                <div class="values">
-                    <div class="value-item">
-                        <img src="value-1.png" alt="Sustainability">
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="values-section py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="mb-4">Our Core Values</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="value-item shadow-sm p-4 bg-white rounded">
+                        <img src="../static/images/value-1.png" alt="Sustainability" class="mb-3" width="80">
                         <h3>Sustainability</h3>
                         <p>We are committed to reducing environmental impact through innovative solutions.</p>
                     </div>
-                    <div class="value-item">
-                        <img src="value-2.png" alt="Innovation">
+                </div>
+                <div class="col-md-4">
+                    <div class="value-item shadow-sm p-4 bg-white rounded">
+                        <img src="../static/images/value-2.png" alt="Innovation" class="mb-3" width="80">
                         <h3>Innovation</h3>
                         <p>We leverage technology to develop smarter ways of conserving water resources.</p>
                     </div>
-                    <div class="value-item">
-                        <img src="value-3.png" alt="Community">
+                </div>
+                <div class="col-md-4">
+                    <div class="value-item shadow-sm p-4 bg-white rounded">
+                        <img src="../static/images/value-3.png" alt="Community" class="mb-3" width="80">
                         <h3>Community</h3>
                         <p>We empower communities by providing them with sustainable water conservation tools.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="team">
-            <div class="container">
-                <h2>Meet the Team</h2>
-                <div class="team-grid">
-                    <div class="team-member">
-                     
+    <!-- Team Section -->
+    <section class="team py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Meet the Team</h2>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <div class="team-member p-3 shadow-sm bg-white rounded">
                         <h3>Sohaib Faheem</h3>
                         <p>Backend Developer</p>
                     </div>
-                    <div class="team-member">
-                     
+                </div>
+                <div class="col-md-3">
+                    <div class="team-member p-3 shadow-sm bg-white rounded">
                         <h3>Ziad Bin Tariq</h3>
                         <p>Frontend Developer</p>
                     </div>
-                    <div class="team-member">
+                </div>
+                <div class="col-md-3">
+                    <div class="team-member p-3 shadow-sm bg-white rounded">
                         <h3>Hetvi Patel</h3>
                         <p>LuLa Officer</p>
                     </div>
-
-                    <div class="team-member">
+                </div>
+                <div class="col-md-3">
+                    <div class="team-member p-3 shadow-sm bg-white rounded">
                         <h3>Emma Brown</h3>
                         <p>Chief Sustainability Officer</p>
-                    </div>  
-
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
-
-
-
-
-
+        </div>
+    </section>
 </section>
 
 {% endblock body %}
