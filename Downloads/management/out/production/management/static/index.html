@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { margin-top: 20px; }
+        .card { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Student Management System</h1>
+        
+        <!-- Students Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Students</h3>
+                <button class="btn btn-primary" onclick="showAddStudentModal()">Add Student</button>
+            </div>
+            <div class="card-body">
+                <div id="studentsList"></div>
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Courses</h3>
+                <button class="btn btn-primary" onclick="showAddCourseModal()">Add Course</button>
+            </div>
+            <div class="card-body">
+                <div id="coursesList"></div>
+            </div>
+        </div>
+
+        <!-- Enrollments Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Enrollments</h3>
+                <button class="btn btn-primary" onclick="showAddEnrollmentModal()">Add Enrollment</button>
+            </div>
+            <div class="card-body">
+                <div id="enrollmentsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Modal -->
+    <div class="modal fade" id="studentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add/Edit Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="studentForm">
+                        <input type="hidden" id="studentId">
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStudent()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Modal -->
+    <div class="modal fade" id="courseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add/Edit Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="courseForm">
+                        <input type="hidden" id="courseId">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="courseName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Code</label>
+                            <input type="text" class="form-control" id="courseCode" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="courseDescription"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCourse()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrollment Modal -->
+    <div class="modal fade" id="enrollmentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Enrollment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="enrollmentForm">
+                        <div class="mb-3">
+                            <label class="form-label">Student</label>
+                            <select class="form-control" id="studentSelect" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Course</label>
+                            <select class="form-control" id="courseSelect" required></select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEnrollment()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api';
+
+        // Student functions
+        async function loadStudents() {
+            const response = await fetch(`${API_BASE_URL}/students`);
+            const students = await response.json();
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = students.map(student => `
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">${student.firstName} ${student.lastName}</h5>
+                        <p class="card-text">Email: ${student.email}</p>
+                        <button class="btn btn-sm btn-primary" onclick="editStudent(${student.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteStudent(${student.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddStudentModal() {
+            document.getElementById('studentId').value = '';
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('email').value = '';
+            new bootstrap.Modal(document.getElementById('studentModal')).show();
+        }
+
+        async function saveStudent() {
+            const studentId = document.getElementById('studentId').value;
+            const student = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value
+            };
+
+            const url = studentId ? `${API_BASE_URL}/students/${studentId}` : `${API_BASE_URL}/students`;
+            const method = studentId ? 'PUT' : 'POST';
+
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(student)
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById('studentModal')).hide();
+            loadStudents();
+        }
+
+        async function editStudent(id) {
+            const response = await fetch(`${API_BASE_URL}/students/${id}`);
+            const student = await response.json();
+            
+            document.getElementById('studentId').value = student.id;
+            document.getElementById('firstName').value = student.firstName;
+            document.getElementById('lastName').value = student.lastName;
+            document.getElementById('email').value = student.email;
+            
+            new bootstrap.Modal(document.getElementById('studentModal')).show();
+        }
+
+        async function deleteStudent(id) {
+            if (confirm('Are you sure you want to delete this student?')) {
+                await fetch(`${API_BASE_URL}/students/${id}`, { method: 'DELETE' });
+                loadStudents();
+            }
+        }
+
+        // Course functions
+        async function loadCourses() {
+            const response = await fetch(`${API_BASE_URL}/courses`);
+            const courses = await response.json();
+            const coursesList = document.getElementById('coursesList');
+            coursesList.innerHTML = courses.map(course => `
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">${course.name}</h5>
+                        <p class="card-text">Code: ${course.code}</p>
+                        <p class="card-text">${course.description || ''}</p>
+                        <button class="btn btn-sm btn-primary" onclick="editCourse(${course.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddCourseModal() {
+            document.getElementById('courseId').value = '';
+            document.getElementById('courseName').value = '';
+            document.getElementById('courseCode').value = '';
+            document.getElementById('courseDescription').value = '';
+            new bootstrap.Modal(document.getElementById('courseModal')).show();
+        }
+
+        async function saveCourse() {
+            const courseId = document.getElementById('courseId').value;
+            const course = {
+                name: document.getElementById('courseName').value,
+                code: document.getElementById('courseCode').value,
+                description: document.getElementById('courseDescription').value
+            };
+
+            const url = courseId ? `${API_BASE_URL}/courses/${courseId}` : `${API_BASE_URL}/courses`;
+            const method = courseId ? 'PUT' : 'POST';
+
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(course)
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById('courseModal')).hide();
+            loadCourses();
+        }
+
+        async function editCourse(id) {
+            const response = await fetch(`${API_BASE_URL}/courses/${id}`);
+            const course = await response.json();
+            
+            document.getElementById('courseId').value = course.id;
+            document.getElementById('courseName').value = course.name;
+            document.getElementById('courseCode').value = course.code;
+            document.getElementById('courseDescription').value = course.description || '';
+            
+            new bootstrap.Modal(document.getElementById('courseModal')).show();
+        }
+
+        async function deleteCourse(id) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                await fetch(`${API_BASE_URL}/courses/${id}`, { method: 'DELETE' });
+                loadCourses();
+            }
+        }
+
+        // Enrollment functions
+        async function loadEnrollments() {
+            const response = await fetch(`${API_BASE_URL}/enrollments`);
+            const enrollments = await response.json();
+            const enrollmentsList = document.getElementById('enrollmentsList');
+            enrollmentsList.innerHTML = enrollments.map(enrollment => `
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Enrollment #${enrollment.id}</h5>
+                        <p class="card-text">Student ID: ${enrollment.studentId}</p>
+                        <p class="card-text">Course ID: ${enrollment.courseId}</p>
+                        <p class="card-text">Status: ${enrollment.status}</p>
+                        <button class="btn btn-sm btn-danger" onclick="deleteEnrollment(${enrollment.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function showAddEnrollmentModal() {
+            const [students, courses] = await Promise.all([
+                fetch(`${API_BASE_URL}/students`).then(res => res.json()),
+                fetch(`${API_BASE_URL}/courses`).then(res => res.json())
+            ]);
+
+            const studentSelect = document.getElementById('studentSelect');
+            const courseSelect = document.getElementById('courseSelect');
+
+            studentSelect.innerHTML = students.map(student => 
+                `<option value="${student.id}">${student.firstName} ${student.lastName}</option>`
+            ).join('');
+
+            courseSelect.innerHTML = courses.map(course => 
+                `<option value="${course.id}">${course.name} (${course.code})</option>`
+            ).join('');
+
+            new bootstrap.Modal(document.getElementById('enrollmentModal')).show();
+        }
+
+        async function saveEnrollment() {
+            const enrollment = {
+                studentId: parseInt(document.getElementById('studentSelect').value),
+                courseId: parseInt(document.getElementById('courseSelect').value)
+            };
+
+            await fetch(`${API_BASE_URL}/enrollments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(enrollment)
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById('enrollmentModal')).hide();
+            loadEnrollments();
+        }
+
+        async function deleteEnrollment(id) {
+            if (confirm('Are you sure you want to delete this enrollment?')) {
+                await fetch(`${API_BASE_URL}/enrollments/${id}`, { method: 'DELETE' });
+                loadEnrollments();
+            }
+        }
+
+        // Load initial data
+        loadStudents();
+        loadCourses();
+        loadEnrollments();
+    </script>
+</body>
+</html> 

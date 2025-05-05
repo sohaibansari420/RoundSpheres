@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Let's Prep</title>
+  <style>
+    /* Global Styles (consistent with main site) */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Navbar Styles (consistent with main site) */
+    nav {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav-links li {
+        margin-left: 30px;
+        position: relative;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: #2c3e50;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: #3498db;
+    }
+
+    /* Dropdown Styles - Updated to match screenshot */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        border-radius: 5px;
+        z-index: 1;
+        padding: 10px 0;
+    }
+
+    .dropdown-content a {
+        color: #2c3e50;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .menu-toggle {
+        display: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    /* About Hero Section */
+    .about-hero {
+        background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+    }
+
+    .about-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .about-hero p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* About Content Section */
+    .about-content {
+        padding: 80px 0;
+    }
+
+    .about-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .about-text {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .about-image {
+        flex: 1;
+        min-width: 300px;
+        height: 400px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .about-image:hover img {
+        transform: scale(1.05);
+    }
+
+    .section-title {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+    .about-text p {
+        margin-bottom: 20px;
+        color: #555;
+    }
+
+    /* Mission/Vision Section */
+    .mission-section {
+        background-color: #f0f5f9;
+        padding: 80px 0;
+    }
+
+    .mission-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+    }
+
+    .mission-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 40px 30px;
+        width: 100%;
+        max-width: 350px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .mission-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .mission-icon {
+        font-size: 2.5rem;
+        color: #3498db;
+        margin-bottom: 20px;
+    }
+
+    .mission-card h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    /* Team Section */
+    .team-section {
+        padding: 80px 0;
+    }
+
+    .team-members {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+    }
+
+    .team-member {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 280px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+    }
+
+    .member-image {
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .member-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .team-member:hover .member-image img {
+        transform: scale(1.1);
+    }
+
+    .member-info {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .member-info h3 {
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .member-info p {
+        color: #3498db;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-links a {
+        color: #2c3e50;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #3498db;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .stats-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 30px;
+    }
+
+    .stat-item {
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 30px 0;
+        text-align: center;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: #fff;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            transition: left 0.3s ease;
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links li {
+            margin: 15px 0;
+        }
+
+        .dropdown-content {
+            position: static;
+            box-shadow: none;
+            display: none;
+            width: 100%;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: none;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .about-hero h1 {
+            font-size: 2.2rem;
+        }
+
+        .about-hero p {
+            font-size: 1rem;
+        }
+
+        .about-image {
+            height: 300px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .about-hero {
+            padding: 80px 0;
+        }
+
+        .about-hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+        }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav>
+  <div class="container">
+    <div class="navbar">
+      <a href="#" class="logo">Let's Prep</a>
+      <div class="menu-toggle" id="mobile-menu">
+        ☰
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="./course.html">Courses</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li class="dropdown">
+          <a href="#">Login/Signup <i class="fas fa-caret-down"></i></a>
+          <div class="dropdown-content">
+            <a href="./login.html">Login</a>
+            <a href="./signup.html">Sign Up</a>
+            <a href="./dashboard.html">Admin</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- About Hero Section -->
+<section class="about-hero">
+  <div class="container">
+    <h1>About Global Education Academy</h1>
+    <p>Empowering minds and transforming lives through innovative education since 2010</p>
+  </div>
+</section>
+
+<!-- About Content Section -->
+<section class="about-content">
+  <div class="container">
+    <div class="about-container">
+      <div class="about-text">
+        <h2 class="section-title">Our Story</h2>
+        <p>Founded in 2010, Global Education Academy began as a small initiative to provide quality education to underserved communities. What started as a single classroom has now grown into a leading educational institution with multiple campuses worldwide.</p>
+        <p>Our journey has been marked by innovation, dedication, and an unwavering commitment to educational excellence. We believe that education is the most powerful tool for personal and societal transformation.</p>
+        <p>Today, we serve over 10,000 students annually, offering a diverse range of programs designed to meet the needs of learners at every stage of their educational journey.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Students learning in classroom">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission/Vision Section -->
+<section class="mission-section">
+  <div class="container">
+    <h2 class="section-title" style="text-align: center;">Our Core Values</h2>
+    <div class="mission-cards">
+      <div class="mission-card">
+        <div class="mission-icon">
+          <i class="fas fa-bullseye"></i>
+        </div>
+        <h3>Our Mission</h3>
+        <p>To provide accessible, high-quality education that empowers individuals to reach their full potential and make meaningful contributions to society.</p>
+      </div>
+
+      <div class="mission-card">
+        <div class="mission-icon">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h3>Our Vision</h3>
+        <p>To be a global leader in innovative education, creating a world where learning knows no boundaries and every individual has the opportunity to succeed.</p>
+      </div>
+
+      <div class="mission-card">
+        <div class="mission-icon">
+          <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <h3>Our Approach</h3>
+        <p>We combine traditional teaching methods with cutting-edge technology to create engaging, personalized learning experiences for all students.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <h2 class="section-title">By The Numbers</h2>
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-number">10,000+</div>
+        <div class="stat-label">Students Enrolled</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Qualified Faculty</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">15</div>
+        <div class="stat-label">Global Campuses</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">95%</div>
+        <div class="stat-label">Graduation Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <div class="container">
+    <h2 class="section-title" style="text-align: center;">Meet Our Leadership</h2>
+    <div class="team-members">
+      <div class="team-member">
+        <div class="member-image">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80" alt="Dr. Sarah Johnson">
+        </div>
+        <div class="member-info">
+          <h3>Dr. Sarah Johnson</h3>
+          <p>Founder & CEO</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80" alt="Michael Chen">
+        </div>
+        <div class="member-info">
+          <h3>Michael Chen</h3>
+          <p>Academic Director</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80" alt="Priya Patel">
+        </div>
+        <div class="member-info">
+          <h3>Priya Patel</h3>
+          <p>Director of Innovation</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>&copy; 2023 Let's Prep. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenu = document.getElementById('mobile-menu');
+  const navLinks = document.getElementById('nav-links');
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  mobileMenu.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+  });
+
+  // Dropdown toggle for mobile
+  dropdowns.forEach(dropdown => {
+      dropdown.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+              e.preventDefault();
+              dropdown.classList.toggle('active');
+          }
+      });
+  });
+</script>
+</body>
+</html>

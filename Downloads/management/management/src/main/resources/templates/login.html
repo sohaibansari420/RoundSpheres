@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Edubin Education</title>
+  <style>
+    /* Global Styles (consistent with main site) */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Navbar Styles (consistent with main site) */
+    nav {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav-links li {
+        margin-left: 30px;
+        position: relative;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: #2c3e50;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: #3498db;
+    }
+
+    .menu-toggle {
+        display: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    /* Login Hero Section */
+    .login-hero {
+        background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-hero-content {
+        width: 100%;
+    }
+
+    .login-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .login-hero p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+    }
+
+    /* Login Form Container */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -50px;
+    }
+
+    .login-form-wrapper {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        margin: 0 20px;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-header h2 {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .form-header p {
+        color: #666;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+    }
+
+    .remember-me input {
+        margin-right: 8px;
+    }
+
+    .forgot-password {
+        color: #3498db;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    .login-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .login-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .social-login {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .social-login p {
+        color: #666;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .social-login p::before,
+    .social-login p::after {
+        content: "";
+        display: inline-block;
+        width: 30%;
+        height: 1px;
+        background-color: #ddd;
+        position: absolute;
+        top: 50%;
+    }
+
+    .social-login p::before {
+        left: 0;
+    }
+
+    .social-login p::after {
+        right: 0;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: translateY(-3px);
+    }
+
+    .facebook {
+        background-color: #3b5998;
+    }
+
+    .google {
+        background-color: #db4437;
+    }
+
+    .linkedin {
+        background-color: #0077b5;
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .register-link a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 30px 0;
+        text-align: center;
+        margin-top: auto;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: #fff;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            transition: left 0.3s ease;
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links li {
+            margin: 15px 0;
+        }
+
+        .login-hero h1 {
+            font-size: 2rem;
+        }
+
+        .login-hero p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .login-hero {
+            padding: 60px 0;
+        }
+
+        .login-form-wrapper {
+            padding: 30px 20px;
+        }
+
+        .form-header h2 {
+            font-size: 1.5rem;
+        }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav>
+  <div class="container">
+    <div class="navbar">
+      <a href="index.html" class="logo">Edubin</a>
+      <div class="menu-toggle" id="mobile-menu">
+        ☰
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Login Hero Section -->
+<section class="login-hero">
+  <div class="container">
+    <div class="login-hero-content">
+      <h1>Welcome Back to Edubin</h1>
+      <p>Access your courses, track your progress, and continue your learning journey</p>
+
+      <div class="login-container">
+        <div class="login-form-wrapper">
+          <div class="form-header">
+            <h2>Login to Your Account</h2>
+            <p>Enter your credentials to access your dashboard</p>
+          </div>
+
+          <form>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="remember-forgot">
+              <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+              </div>
+              <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+            <div class="social-login">
+              <p>Or login with</p>
+              <div class="social-icons">
+                <a href="#" class="social-icon facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon google">
+                  <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="social-icon linkedin">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="register-link">
+              Don't have an account? <a href="./signup.html">Register here</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Let's Prep. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenu = document.getElementById('mobile-menu');
+  const navLinks = document.getElementById('nav-links');
+
+  mobileMenu.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+  });
+</script>
+</body>
+</html>
